@@ -1,10 +1,10 @@
 import axios from "axios";
-import { User } from "../entity/User";
-// import { httpClient } from "./http";
+import { User } from "../model/User.model";
+import { httpClient } from "./http";
 
 export const getUsers = async () => {
   try {
-    const { data } = await axios.get("/api/user");
+    const { data } = await httpClient.get("/user");
     return data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
@@ -16,6 +16,7 @@ export const createUser = async (user: User) => {
   try {
     const { data } = await axios.post("/api/join", user);
     return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.log(err);
   }

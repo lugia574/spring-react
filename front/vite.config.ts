@@ -7,8 +7,8 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "http://localhost:8080", // Spring 서버 주소
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        changeOrigin: true, // CORS 문제 방지
+        rewrite: (path) => path.replace(/^\/api/, ""), // "/api" 제거
       },
     },
   },
