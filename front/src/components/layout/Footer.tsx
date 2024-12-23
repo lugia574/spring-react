@@ -17,13 +17,20 @@ const Footer = () => {
 const FooterStyle = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+
   margin: 0 auto;
   width: 100%;
-  height: 80px;
+
   background-color: ${({ theme }) => theme.color.primary};
   border-top: 1px solid ${({ theme }) => theme.color.borderGray};
   padding: 0.5rem 0;
+
+  .footer-content {
+    display: flex;
+    align-items: end;
+    height: 5rem;
+    padding: 0.5rem;
+  }
 `;
 
 export default Footer;

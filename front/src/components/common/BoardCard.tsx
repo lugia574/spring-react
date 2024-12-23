@@ -3,6 +3,7 @@ import Title from "./Title";
 import { Post } from "../../model/Post.model";
 import { getImgSrc } from "../../utils/image";
 import { Link } from "react-router-dom";
+import { FaComment } from "react-icons/fa";
 interface BoardProps {
   boardProp: Post;
 }
@@ -19,7 +20,9 @@ const BoardCard = ({ boardProp }: BoardProps) => {
             <div className="board-title">
               <Title size="xsmall">{boardProp.title}</Title>
               <div className="comment-container">
-                <div className="comment-icon"></div>
+                <div className="comment-icon">
+                  <FaComment />
+                </div>
                 <div className="comment-counter">{boardProp.comment_count}</div>
               </div>
             </div>
@@ -73,6 +76,16 @@ const BoardCardStyle = styled.div`
 
     .board-title > h1 {
       margin: 0.3rem 0;
+    }
+    .comment-container {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      gap: 0.2rem;
+
+      .comment-icon {
+        margin-bottom: 0.2rem;
+      }
     }
 
     .board-info,

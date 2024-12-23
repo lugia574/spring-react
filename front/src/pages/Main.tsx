@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Title from "../components/common/Title";
 import BoardCard from "../components/common/BoardCard";
 import { Post } from "../model/Post.model";
+import BestBoardCard from "../components/common/BestBoardCard";
 // import { usePost } from "../hook/postHook";
 // import { useEffect } from "react";
 // interface Props {}
@@ -57,7 +58,9 @@ const Main = () => {
       <div className="main">
         <div className="main-best">
           <Title size="medium">베스트 글</Title>
-          <div className="best-content-list"></div>
+          <div className="best-content-list">
+            <BestBoardCard key={1} boardProp={posts[0]} />
+          </div>
         </div>
         <div className="main-content">
           <Title size="medium">전체 게시글</Title>
@@ -87,12 +90,11 @@ const MainStyle = styled.div`
     justify-content: center;
     align-items: center;
     padding: 0 0.5em;
-    background-color: seagreen;
     .best-content-list {
       height: 140px;
       width: 100%;
 
-      background-color: saddlebrown;
+      /* background-color: saddlebrown; */
     }
   }
 
@@ -114,8 +116,10 @@ const MainStyle = styled.div`
     .main {
       margin: 0rem;
     }
-    .main-best {
-      background-color: red;
+
+    .main-best,
+    .main-content {
+      width: 100%;
     }
   }
 `;
