@@ -28,10 +28,10 @@ const WrapperStyle = styled.div`
 
 const LayoutStyle = styled.main`
   flex: 1;
-  margin-top: 80px;
+  margin-top: 6.3rem;
 
   @media ${({ theme }) => theme.mediaQuery.mobile} {
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
   }
 `;
 

@@ -1,25 +1,36 @@
-import { useState } from "react";
+// import { useState } from "react";
 import styled from "styled-components";
+import { Button } from "../common/Button";
+import Title from "../common/Title";
 // interface Props {}
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <HeaderStyle>
       <div className="header">
         <div className="header-main">
-          <div className="logo">Board</div>
+          <div className="logo">
+            <Title size="large">Board</Title>
+          </div>
           <nav className="desktop-nav">
             <div className="" onClick={() => {}}>
-              로그인
+              <Button
+                $size="medium"
+                $radius="default"
+                type="button"
+                $scheme="normal"
+              >
+                로그인
+              </Button>
             </div>
             <div className="modile-nav modile">
-              <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+              {/* <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
                 <div className="" onClick={() => {}}>
                   로그인
                 </div>
-              </nav>
+              </nav> */}
             </div>
           </nav>
         </div>
@@ -50,7 +61,6 @@ const HeaderStyle = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
   }
 `;
 

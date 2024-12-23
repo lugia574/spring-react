@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     color: #333333;
+    min-width: 275px;
 
     /* 스크롤바 Track(트랙) */
     ::-webkit-scrollbar {
@@ -39,6 +40,11 @@ export const GlobalStyle = createGlobalStyle`
 
   a{
     text-decoration-line: none;
+    
+  }
+  a:link, a:visited{
+    color: #333333;
+    text-decoration: none;
   }
 
   svg, path {
