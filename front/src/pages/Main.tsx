@@ -48,6 +48,16 @@ const posts: Post[] = [
     writer_datetime: "2024-12-23",
     writer_email: "test@tes.com",
   },
+  {
+    board_number: 5,
+    comment_count: 2,
+    content: "안녕",
+    favorite_count: 1,
+    title: "안녕하세뇨",
+    view_count: 5,
+    writer_datetime: "2024-12-23",
+    writer_email: "test@tes.com",
+  },
 ];
 
 const Main = () => {
@@ -57,13 +67,17 @@ const Main = () => {
     <MainStyle>
       <div className="main">
         <div className="main-best">
-          <Title size="medium">베스트 글</Title>
+          <Title size="medium">👍 베스트 포스트</Title>
           <div className="best-content-list">
             <BestBoardCard key={1} boardProp={posts[0]} />
+            <BestBoardCard key={2} boardProp={posts[1]} />
+            <BestBoardCard key={3} boardProp={posts[2]} />
+            <BestBoardCard key={4} boardProp={posts[3]} />
+            <BestBoardCard key={5} boardProp={posts[4]} />
           </div>
         </div>
         <div className="main-content">
-          <Title size="medium">전체 게시글</Title>
+          <Title size="medium">📄 전체 게시글</Title>
           {posts.map((post, idx) => (
             <BoardCard key={idx} boardProp={post} />
           ))}
@@ -91,8 +105,13 @@ const MainStyle = styled.div`
     align-items: center;
     padding: 0 0.5em;
     .best-content-list {
-      height: 140px;
+      display: flex;
+      justify-content: space-around;
+      height: auto;
       width: 100%;
+      overflow: hidden;
+      /* flex-wrap: wrap; */
+      gap: 0.5rem;
 
       /* background-color: saddlebrown; */
     }

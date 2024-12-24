@@ -1,4 +1,4 @@
-import { PostList } from "../model/Post.model";
+import { Post, PostList } from "../model/Post.model";
 import { httpClient } from "./http";
 
 export const getPosts = async (page: number) => {
@@ -9,7 +9,8 @@ export const getPosts = async (page: number) => {
     return data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    console.log(err, "에러로 빠진거냐 싶은데도 이게 이럼");
+    console.log(err);
+    throw err;
     return {
       posts: [],
       pagination: {
@@ -20,12 +21,14 @@ export const getPosts = async (page: number) => {
   }
 };
 
-export const getPostDetail = async (post_id: number) => {
+export const getPostDetail = async (postId: number) => {
   try {
-    const { data } = await httpClient.get(`/boards/${post_id}`);
+    const { data } = await httpClient.get<Post>(`/boards/:${postId}`);
+    console.log(data);
     return data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.log(err);
+    throw err;
   }
 };

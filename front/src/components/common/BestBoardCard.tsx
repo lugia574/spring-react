@@ -32,21 +32,21 @@ const BestBoardCard = ({ boardProp }: BoardProps) => {
 };
 
 const BestBoardCardStyle = styled.div`
-  width: 200px;
+  width: 20%;
   height: 100%;
   .bb-warrper {
-    display: flex;
+    width: 100%;
+    height: 100%;
+    min-width: 100px;
     position: relative;
-    justify-content: left;
   }
 
   .bb-image {
-    height: 140px;
-    width: 200px;
+    height: 8.5rem;
     position: absolute;
     z-index: -1;
-    /* opacity: 0.8; */
-
+    opacity: 0.9;
+    width: 100%;
     img {
       border-radius: ${({ theme }) => theme.borderRadius.default};
       width: 100%;
@@ -56,8 +56,8 @@ const BestBoardCardStyle = styled.div`
   }
 
   .bb-content {
-    width: 200px;
-    height: 140px;
+    width: 100%;
+    height: 8.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

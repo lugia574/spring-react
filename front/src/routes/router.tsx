@@ -29,7 +29,7 @@ const routerArr = [
     errorElement: <Layout children={<Error />} />,
   },
   {
-    path: "/post/id",
+    path: "/post/:id",
     element: <Layout children={<PostDetail />} />,
     errorElement: <Layout children={<Error />} />,
   },

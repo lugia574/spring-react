@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
 import Title from "../common/Title";
+import { Link } from "react-router-dom";
 // interface Props {}
 
 const Header = () => {
@@ -12,18 +13,22 @@ const Header = () => {
       <div className="header">
         <div className="header-main">
           <div className="logo">
-            <Title size="large">Board</Title>
+            <Link to={`/`}>
+              <Title size="large">Board</Title>
+            </Link>
           </div>
           <nav className="desktop-nav">
             <div className="" onClick={() => {}}>
-              <Button
-                $size="medium"
-                $radius="default"
-                type="button"
-                $scheme="normal"
-              >
-                로그인
-              </Button>
+              <Link to={`/login`}>
+                <Button
+                  $size="medium"
+                  $radius="default"
+                  type="button"
+                  $scheme="normal"
+                >
+                  로그인
+                </Button>
+              </Link>
             </div>
             <div className="modile-nav modile">
               {/* <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
