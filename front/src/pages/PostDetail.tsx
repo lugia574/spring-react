@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Title from "../components/common/Title";
 import Comment from "../components/common/Comment";
 import { getImgSrc } from "../utils/image";
-import WriteInput from "../components/common/WriteInput";
+import CommentInput from "../components/common/CommentInput";
 // interface Props {}
 
 const PostDetail = () => {
@@ -31,15 +31,21 @@ const PostDetail = () => {
           </div>
         </div>
         <div className="post-comment">
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
+          <div className="comment-info">
+            <span> 댓글 💬</span>
+          </div>
+          <div className="comment-list">
+            <Comment />
+            <Comment />
+            <Comment />
+            <Comment />
+            <Comment />
+            <Comment />
+            <Comment />
+          </div>
+
           <div className="comment-write">
-            <WriteInput />
+            <CommentInput />
           </div>
         </div>
       </div>

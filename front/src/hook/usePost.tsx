@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getPostDetail, getPosts } from "../api/post";
+import { getPostDetail, getPosts } from "../api/post.api";
 
 const isLastPage = (totalCnt: number, pages: number) => {
   return totalCnt === 0 || Math.ceil(totalCnt / 10) === pages;

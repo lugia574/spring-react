@@ -7,3 +7,7 @@ export interface User {
   address_detail: string | undefined;
   profile: string | undefined;
 }
+
+export interface joinFormProps extends User {
+  passwordConfirm: string;
+}
