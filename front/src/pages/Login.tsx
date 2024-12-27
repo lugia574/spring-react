@@ -66,8 +66,9 @@ const Login = () => {
 };
 
 export const LoginStyle = styled.div`
-  max-width: ${({ theme }) => theme.layout.width.small};
+  max-width: 50%;
   margin: 80px auto;
+  /* height: 40rem; */
 
   fieldset {
     border: 0;
@@ -75,6 +76,11 @@ export const LoginStyle = styled.div`
     .error-text {
       color: red;
     }
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   input {
@@ -88,6 +94,17 @@ export const LoginStyle = styled.div`
   .info {
     text-align: center;
     padding: 16px 0 0 0;
+  }
+
+  .login-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    .login-link {
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 

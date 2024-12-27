@@ -1,17 +1,20 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-// import { usePostDetail } from "../hook/postHook";
 import Title from "../components/common/Title";
 import Comment from "../components/common/Comment";
 import { getImgSrc } from "../utils/image";
 import CommentInput from "../components/common/CommentInput";
+import { usePostDetail } from "../hook/usePost";
+import { useCommentList } from "../hook/useComment";
 // interface Props {}
 
 const PostDetail = () => {
   const { id } = useParams();
   const postId = id ? parseInt(id, 10) : undefined;
-  // const { data } = usePostDetail(postId);
+  const data = usePostDetail(postId);
+  const commentList = useCommentList(postId);
 
+  console.log(data, commentList);
   return (
     <PostDetailStyle>
       <div className="Postwarrper">

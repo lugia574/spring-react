@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPostDetail, getPosts } from "../api/post.api";
 
 const isLastPage = (totalCnt: number, pages: number) => {
@@ -41,14 +41,17 @@ export const usePost = () => {
   };
 };
 
-export const usePostDetail = (postId: number | undefined) => {
+export const usePostDetail = async (postId: number | undefined) => {
   if (postId === undefined)
-    throw new Error("param error: postId is not number.");
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["postDetail"],
-    queryFn: () => getPostDetail(postId),
-  });
+    throw new Error("param error: postId is not exist or not number.");
 
-  if (data === undefined) throw new Error("post error: post does not exist.");
-  return { data, isLoading, error };
+  const data = await getPostDetail(postId);
+  console.log("섹스", data);
+  if (data === undefined) throw new Error(`post error: post does not exist.`);
+  return { data };
 };
+
+// const { data, isLoading, error } = useQuery({
+//   queryKey: ["postDetail"],
+//   queryFn: () => getPostDetail(postId),
+// });
