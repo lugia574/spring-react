@@ -60,7 +60,7 @@ const posts: Post[] = [
   },
 ];
 
-const Main = () => {
+const MainPage = () => {
   // const { posts } = usePost();
 
   return (
@@ -143,4 +143,4 @@ const MainStyle = styled.div`
   }
 `;
 
-export default Main;
+export default MainPage;

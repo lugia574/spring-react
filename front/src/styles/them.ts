@@ -18,7 +18,8 @@ export type BorderRadius =
   | "write"
   | "tabContainer"
   | "leftRadius"
-  | "rightRadius";
+  | "rightRadius"
+  | "cicle";
 export type BoxShadow = "default" | "itemShadow";
 
 interface Theme {
@@ -60,6 +61,7 @@ export const theme: Theme = {
     tabContainer: " 0 0 8px 8px",
     leftRadius: " 8px 0 0 8px",
     rightRadius: "0 8px 8px 0",
+    cicle: "50%",
   },
 
   /* font-color */

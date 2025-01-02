@@ -12,7 +12,7 @@ export interface isEmailProps {
   email: string;
 }
 
-const Login = () => {
+const LoginPage = () => {
   const { userLogin } = useUser();
   const {
     register,
@@ -108,4 +108,4 @@ export const LoginStyle = styled.div`
   }
 `;
 
-export default Login;
+export default LoginPage;

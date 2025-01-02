@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
 import { isEmailUnique, authLogin, authSignup } from "../api/user.api";
-import { LoginProps } from "../pages/Login";
+import { LoginProps } from "../pages/LoginPage";
 import { UseFormClearErrors, UseFormSetError } from "react-hook-form";
 import { User } from "../model/User.model";
 // 공통 인터페이스 정의

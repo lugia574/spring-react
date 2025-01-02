@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Footer from "./Footer";
 import Header from "./Header";
+import TopButton from "../common/TopButton";
+import SideButton from "../common/SideButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +14,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Header />
       <LayoutStyle>{children}</LayoutStyle>
       <Footer />
+      <SideButton isWriting={true} />
     </WrapperStyle>
   );
 };

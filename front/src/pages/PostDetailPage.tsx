@@ -8,13 +8,12 @@ import { usePostDetail } from "../hook/usePost";
 import { useCommentList } from "../hook/useComment";
 // interface Props {}
 
-const PostDetail = () => {
+const PostDetailPage = () => {
   const { id } = useParams();
   const postId = id ? parseInt(id, 10) : undefined;
   const data = usePostDetail(postId);
   const commentList = useCommentList(postId);
 
-  console.log(data, commentList);
   return (
     <PostDetailStyle>
       <div className="Postwarrper">
@@ -103,4 +102,4 @@ const PostDetailStyle = styled.div`
   }
 `;
 
-export default PostDetail;
+export default PostDetailPage;

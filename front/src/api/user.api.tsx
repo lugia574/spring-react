@@ -1,7 +1,7 @@
 import axios from "axios";
 import { User } from "../model/User.model";
 import { httpClient } from "./http";
-import { isEmailProps, LoginProps } from "../pages/Login";
+import { isEmailProps, LoginProps } from "../pages/LoginPage";
 
 export const getUsers = async () => {
   try {

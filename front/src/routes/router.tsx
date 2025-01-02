@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../components/layout/Layout";
-import Error from "../pages/Error";
-import Join from "../pages/Join";
-import Login from "../pages/Login";
-import Main from "../pages/Main";
-import PostDetail from "../pages/PostDetail";
-import PostEdit from "../pages/PostEdit";
-import PostWrite from "../pages/PostWrite";
+import MainPage from "../pages/MainPage";
+import ErrorPage from "../pages/ErrorPage";
+import JoinPage from "../pages/JoinPage";
+import LoginPage from "../pages/LoginPage";
+import PostDetailPage from "../pages/PostDetailPage";
+import PostEditPage from "../pages/PostEditPage";
+import PostWritePage from "../pages/PostWritePage";
 
 // interface RouterProps {
 //   children: React.ReactNode;
@@ -15,38 +15,38 @@ import PostWrite from "../pages/PostWrite";
 const routerArr = [
   {
     path: "/",
-    element: <Layout children={<Main />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<MainPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
   {
     path: "/join",
-    element: <Layout children={<Join />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<JoinPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
   {
     path: "/login",
-    element: <Layout children={<Login />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<LoginPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
   {
     path: "/post/:id",
-    element: <Layout children={<PostDetail />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<PostDetailPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
   {
     path: "/post/id/edit",
-    element: <Layout children={<PostEdit />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<PostEditPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
   {
     path: "/write",
-    element: <Layout children={<PostWrite />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<PostWritePage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
   {
     path: "*",
-    element: <Layout children={<Error />} />,
-    errorElement: <Layout children={<Error />} />,
+    element: <Layout children={<ErrorPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
   },
 ];
 

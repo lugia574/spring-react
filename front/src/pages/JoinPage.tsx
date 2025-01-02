@@ -1,4 +1,4 @@
-import { LoginStyle } from "./Login";
+import { LoginStyle } from "./LoginPage";
 import Title from "../components/common/Title";
 import InputText from "../components/common/InputText";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ export const domainAuth = (email: string) => {
   return false;
 };
 
-const Join = () => {
+const JoinPage = () => {
   const {
     register,
     handleSubmit,
@@ -165,4 +165,4 @@ const Join = () => {
 
 // const JoinStyle = styled.div``;
 
-export default Join;
+export default JoinPage;
