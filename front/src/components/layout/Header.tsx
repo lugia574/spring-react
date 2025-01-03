@@ -50,7 +50,7 @@ const HeaderStyle = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem;
     background-color: ${({ theme }) => theme.color.primary};
     color: ${({ theme }) => theme.color.black};
     position: fixed;
@@ -66,6 +66,10 @@ const HeaderStyle = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
+
+    h1 {
+      margin: 0;
+    }
   }
 `;
 

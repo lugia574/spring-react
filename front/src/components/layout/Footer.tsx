@@ -28,7 +28,7 @@ const FooterStyle = styled.div`
   .footer-content {
     display: flex;
     align-items: end;
-    height: 5rem;
+    height: 2.5rem;
     padding: 0.5rem;
   }
 `;

@@ -1,37 +1,52 @@
 package com.back.back.controller;
 
+import com.back.back.dto.auth.LoginRequest;
 import com.back.back.entity.User;
+import com.back.back.security.JwtTokenProvider;
 import com.back.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @ResponseBody
-    @GetMapping("/api/user")
+    @GetMapping("/user")
     public List<User> userApi(){
         return userService.getUserApi();
     }
 
-    @PostMapping("/api/user/join")
-    public boolean createUser(User user){
-        return userService.createUser(user) ? true : false;
+    @PostMapping("/join")
+    public ResponseEntity<String> createUser(User user){
+        boolean isUserCreated = userService.createUser(user);
+        if(isUserCreated){
+            return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+        }else
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create user: Email already exists");
     }
 
-    @PostMapping("/api/user/login")
-    public boolean loginUser(){
-        return false;
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password){
+        try {
+            String token = userService.userLogin(email, password);
+            return ResponseEntity.status(HttpStatus.OK).body(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
     }
 
-    @PostMapping("api/user/logout")
+    @PostMapping("/logout")
     public boolean logoutUser(){
         return false;
     }

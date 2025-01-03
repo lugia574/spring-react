@@ -8,6 +8,8 @@ import { httpClient } from "../api/http";
 import { Button } from "../components/common/Button";
 // interface Props {}
 
+const CKEDITOR_KEY = import.meta.env.VITE_CKEDITOR_KEY;
+
 // 이미지 업로드 함수
 const uploadImage = async (file: File) => {
   try {
@@ -70,15 +72,18 @@ function MyCustomUploadAdapterPlugin(editor: {
   };
 }
 
-const CKEDITOR_KEY = import.meta.env.VITE_CKEDITOR_KEY;
-
 const PostWritePage = () => {
   const [postTitle, setPostTitle] = useState("");
   const [content, setContent] = useState("");
-  console.log(content);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(postTitle);
+    console.log(content);
+  };
   return (
     <PostWritePageStyle>
-      <form className="post-form" action="">
+      <form className="post-form" onSubmit={handleSubmit}>
         <div className="post-title">
           <InputText
             onChange={(e) => setPostTitle(e.target.value)}
@@ -94,13 +99,9 @@ const PostWritePage = () => {
             extraPlugins: [MyCustomUploadAdapterPlugin],
             placeholder: "내용을 입력하세요",
           }}
-          onReady={(editor) => {
-            console.log("Editor is ready", editor);
-          }}
-          onChange={(event, editor) => {
+          onChange={(_event, editor) => {
             const data = editor.getData();
             setContent(data);
-            console.log(data);
           }}
         />
         <Button $radius="default" $scheme="normal" $size="medium">
@@ -115,6 +116,7 @@ const PostWritePageStyle = styled.div`
   display: flex;
   height: 100%;
   justify-content: center;
+  align-items: center;
   .post-form {
     width: 80%;
     height: 100%;
