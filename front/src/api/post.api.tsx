@@ -21,3 +21,13 @@ export const getPostDetail = async (postId: number) => {
     throw err;
   }
 };
+
+export interface PostData {
+  title: string;
+  content: string;
+}
+
+export const postWritePost = async (postData: PostData) => {
+  const response = await httpClient.post(`/boards`, postData);
+  return response;
+};

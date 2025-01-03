@@ -21,7 +21,7 @@ public class UserController {
     private JwtTokenProvider jwtTokenProvider;
 
     @ResponseBody
-    @GetMapping("/user")
+    @GetMapping("/userList")
     public List<User> userApi(){
         return userService.getUserApi();
     }
@@ -36,9 +36,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password){
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
+        
         try {
-            String token = userService.userLogin(email, password);
+            String token = userService.userLogin(loginRequest.getEmail(), loginRequest.getPassword());
             return ResponseEntity.status(HttpStatus.OK).body(token);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

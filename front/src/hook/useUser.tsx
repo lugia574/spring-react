@@ -4,6 +4,7 @@ import { isEmailUnique, authLogin, authSignup } from "../api/user.api";
 import { LoginProps } from "../pages/LoginPage";
 import { UseFormClearErrors, UseFormSetError } from "react-hook-form";
 import { User } from "../model/User.model";
+import { useAuthStore } from "../stores/authStore";
 // 공통 인터페이스 정의
 interface UserCheckProps {
   clearErrors: UseFormClearErrors<any>;
@@ -35,12 +36,12 @@ const handleUserCheck = async <T,>(
   setError: UseFormSetError<any>
 ) => {
   try {
-    const res = await checkFunction(data);
-    if (res.status === 200) {
+    const response = await checkFunction(data);
+    if (response.status === 200) {
       setUniqueCheck((prev) => !prev);
       clearErrors(field);
     }
-    return res;
+    return response;
   } catch (error: any) {
     if (error.status === 409) {
       setError(field, { message: error.data.message }, { shouldFocus: true });
@@ -56,26 +57,32 @@ const handleUserCheck = async <T,>(
 
 export const useUser = () => {
   const navigate = useNavigate();
+  const { storeLogin } = useAuthStore();
 
   const userLogin = async (user: LoginProps) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const loginRes = await authLogin(user);
-      // 코인 넣는 과정
+      const newAccessToken = loginRes.headers["authorization"];
+      const token = newAccessToken.split(" ")[1];
+      const userId = loginRes.data.userId;
+      storeLogin(token, userId);
+      navigate("/");
       navigate("/");
       return;
-    } catch (err: any) {
-      throw new Error(`login error: ${err.response.data}}`);
+    } catch (err) {
+      console.log(err);
+      throw err;
     }
   };
 
   const userSignup = async (user: User) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const res = await authSignup(user);
-      navigate("/");
-    } catch (err: any) {
-      throw new Error(`error : ${err.response.data}`);
+      const response = await authSignup(user);
+      if (response.status === 201) navigate("/");
+      else throw new Error(`error : ${response.body}`);
+    } catch (err) {
+      console.log(err);
+      throw err;
     }
   };
 

@@ -4,11 +4,13 @@ import Title from "../components/common/Title";
 import Comment from "../components/common/Comment";
 import { getImgSrc } from "../utils/image";
 import CommentInput from "../components/common/CommentInput";
-import { usePostDetail } from "../hook/usePost";
+
 import { useCommentList } from "../hook/useComment";
+import { usePost } from "../hook/usePost";
 // interface Props {}
 
 const PostDetailPage = () => {
+  const { usePostDetail } = usePost();
   const { id } = useParams();
   const postId = id ? parseInt(id, 10) : undefined;
   const data = usePostDetail(postId);

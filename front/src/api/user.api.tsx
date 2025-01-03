@@ -2,6 +2,7 @@ import axios from "axios";
 import { User } from "../model/User.model";
 import { httpClient } from "./http";
 import { isEmailProps, LoginProps } from "../pages/LoginPage";
+import { ErrorType } from "../types/error";
 
 export const getUsers = async () => {
   try {
@@ -15,31 +16,40 @@ export const getUsers = async () => {
 
 export const authSignup = async (user: User) => {
   try {
-    const { data } = await axios.post("/api/join", user);
+    const { data } = await httpClient.post("/user/join", user);
     return data;
   } catch (err) {
     console.log(err);
-    throw new Error(`user signup error`);
+    throw err;
   }
 };
 
+interface loginMessageResponse {
+  message: string;
+}
+
 export const authLogin = async (user: LoginProps) => {
   try {
-    const { data } = await axios.post("/api/login", user);
-    return data;
+    const response = await httpClient.post("/user/login", user);
+
+    return response;
   } catch (err) {
+    const errorObj = err as ErrorType;
+    if (errorObj.response.status === 400) {
+      return err;
+    }
     console.log(err);
-    throw new Error(`user login error`);
+    throw err;
   }
 };
 
 export const isEmailUnique = async (email: isEmailProps) => {
   try {
-    const { data } = await axios.post("api/isEmail", email);
-    return data;
+    const response = await httpClient.post("/user/isEmail", email);
+    return response;
   } catch (err) {
     console.log(err);
-    throw new Error(`user emaill isEmail check error`);
+    throw err;
   }
 };
 

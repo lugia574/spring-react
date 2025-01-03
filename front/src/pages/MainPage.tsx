@@ -3,7 +3,7 @@ import Title from "../components/common/Title";
 import BoardCard from "../components/common/BoardCard";
 import { Post } from "../model/Post.model";
 import BestBoardCard from "../components/common/BestBoardCard";
-// import { usePost } from "../hook/postHook";
+
 // import { useEffect } from "react";
 // interface Props {}
 
@@ -61,7 +61,7 @@ const posts: Post[] = [
 ];
 
 const MainPage = () => {
-  // const { posts } = usePost();
+  // const { useSelectAllPost } = usePost();
 
   return (
     <MainStyle>
