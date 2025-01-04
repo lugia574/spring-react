@@ -1,5 +1,6 @@
 package com.back.back.service;
 
+import com.back.back.dto.auth.JoinRequest;
 import com.back.back.entity.User;
 import com.back.back.repository.UserRepository;
 import com.back.back.security.JwtTokenProvider;
@@ -31,24 +32,39 @@ public class UserService {
         }
     }
 
-    public boolean createUser(User user){
-        if (userRepository.existsByEmail(user.getEmail())) {
-//            throw new IllegalArgumentException("Email already exists");
-            return false;
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public boolean joinUser(JoinRequest joinRequest){
+        User user = new User();
+        user.setEmail(joinRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(joinRequest.getPassword()));
+        user.setNickname(joinRequest.getNickname());
+        user.setProfile(null);
+
         userRepository.save(user);
         return true;
     }
 
-    public String userLogin(String email, String password){
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
-        if(!passwordEncoder.matches(password, user.getPassword())){
-            throw new IllegalArgumentException("Invalid email or password");
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+    }
+
+    public boolean isEmailExists(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean comparePassword(String rawPassword, String encodedPassword) {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            return false;
         }
-        // 토큰 생성후 return
+        return true;
+    }
+
+
+    public String generateToken(String email) {
         return jwtTokenProvider.createToken(email);
     }
+
+
 
     public User userDetail(String email){
         return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with email: " + email));

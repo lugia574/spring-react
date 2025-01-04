@@ -39,11 +39,15 @@ public class JwtTokenProvider {
 
     // JWT 검증
     public static boolean validateJwtToken(String token){
+        if (token == null || !token.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header");
+        }
+        String sliceToken = token.substring(7);
         try {
             Jwts.parser()
                     .verifyWith(key)
                     .build()
-                    .parseSignedClaims(token)
+                    .parseSignedClaims(sliceToken)
                     .getPayload().getSubject();
             return true;
         }catch (Exception err){

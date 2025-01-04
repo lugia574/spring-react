@@ -1,8 +1,8 @@
-import axios from "axios";
 import { User } from "../model/User.model";
 import { httpClient } from "./http";
 import { isEmailProps, LoginProps } from "../pages/LoginPage";
 import { ErrorType } from "../types/error";
+import { getToken } from "../stores/authStore";
 
 export const getUsers = async () => {
   try {
@@ -16,27 +16,28 @@ export const getUsers = async () => {
 
 export const authSignup = async (user: User) => {
   try {
-    const { data } = await httpClient.post("/user/join", user);
-    return data;
+    const response = await httpClient.post("/user/join", user);
+    return response;
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
-
-interface loginMessageResponse {
+interface LoginResponse {
+  token: string;
+  email: string;
+  nickname: string;
   message: string;
 }
 
-export const authLogin = async (user: LoginProps) => {
+export const authLogin = async (user: LoginProps): Promise<LoginResponse> => {
   try {
-    const response = await httpClient.post("/user/login", user);
-
-    return response;
+    const { data } = await httpClient.post<LoginResponse>("/user/login", user);
+    return data;
   } catch (err) {
     const errorObj = err as ErrorType;
     if (errorObj.response.status === 400) {
-      return err;
+      throw err;
     }
     console.log(err);
     throw err;
@@ -44,13 +45,20 @@ export const authLogin = async (user: LoginProps) => {
 };
 
 export const isEmailUnique = async (email: isEmailProps) => {
-  try {
-    const response = await httpClient.post("/user/isEmail", email);
-    return response;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  const response = await httpClient.post("/user/join/check", email);
+  return response;
 };
 
-export const authLogout = async () => {};
+export interface authMessageResponse {
+  message: string;
+}
+
+export const authLogout = async () => {
+  const response = await httpClient.post<authMessageResponse>("/user/logout", {
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+
+  return response;
+};

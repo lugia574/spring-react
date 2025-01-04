@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
-import { isEmailUnique, authLogin, authSignup } from "../api/user.api";
+import {
+  isEmailUnique,
+  authLogin,
+  authSignup,
+  authLogout,
+} from "../api/user.api";
 import { LoginProps } from "../pages/LoginPage";
 import { UseFormClearErrors, UseFormSetError } from "react-hook-form";
 import { User } from "../model/User.model";
@@ -44,7 +49,11 @@ const handleUserCheck = async <T,>(
     return response;
   } catch (error: any) {
     if (error.status === 409) {
-      setError(field, { message: error.data.message }, { shouldFocus: true });
+      setError(
+        field,
+        { message: error.response.data.message },
+        { shouldFocus: true }
+      );
       return;
     } else if (error.status === 400) {
       //   showAlert(error.data.message, "error");
@@ -62,11 +71,10 @@ export const useUser = () => {
   const userLogin = async (user: LoginProps) => {
     try {
       const loginRes = await authLogin(user);
-      const newAccessToken = loginRes.headers["authorization"];
-      const token = newAccessToken.split(" ")[1];
-      const userId = loginRes.data.userId;
-      storeLogin(token, userId);
-      navigate("/");
+      const token = loginRes.token;
+      const email = loginRes.email;
+      const nickname = loginRes.nickname;
+      storeLogin(token, nickname, email);
       navigate("/");
       return;
     } catch (err) {
@@ -75,11 +83,20 @@ export const useUser = () => {
     }
   };
 
+  const userLogout = async () => {
+    try {
+      const res = await authLogout();
+      return res;
+    } catch (error) {
+      return fetchErrorStatusHandler(error, []);
+    }
+  };
+
   const userSignup = async (user: User) => {
     try {
       const response = await authSignup(user);
       if (response.status === 201) navigate("/");
-      else throw new Error(`error : ${response.body}`);
+      else throw new Error(`error : ${response.data.message}`);
     } catch (err) {
       console.log(err);
       throw err;
@@ -102,5 +119,5 @@ export const useUser = () => {
     );
   };
 
-  return { userLogin, userSignup, userEmailCheck };
+  return { userLogin, userSignup, userEmailCheck, userLogout };
 };

@@ -3,10 +3,19 @@ import styled from "styled-components";
 import { Button } from "../common/Button";
 import Title from "../common/Title";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../stores/authStore";
+import { useUser } from "../../hook/useUser";
 // interface Props {}
 
 const Header = () => {
-  // const [menuOpen, setMenuOpen] = useState(false);
+  const { userLogout } = useUser();
+  const { isLoggedIn, storeLogout } = useAuthStore();
+
+  const logoutHandler = () => {
+    userLogout().then(() => {
+      storeLogout();
+    });
+  };
 
   return (
     <HeaderStyle>
@@ -18,17 +27,29 @@ const Header = () => {
             </Link>
           </div>
           <nav className="desktop-nav">
-            <div className="" onClick={() => {}}>
-              <Link to={`/login`}>
+            <div className="">
+              {isLoggedIn ? (
                 <Button
                   $size="medium"
                   $radius="default"
                   type="button"
                   $scheme="normal"
+                  onClick={logoutHandler}
                 >
-                  로그인
+                  로그아웃
                 </Button>
-              </Link>
+              ) : (
+                <Link to={`/login`}>
+                  <Button
+                    $size="medium"
+                    $radius="default"
+                    type="button"
+                    $scheme="normal"
+                  >
+                    로그인
+                  </Button>
+                </Link>
+              )}
             </div>
             <div className="modile-nav modile">
               {/* <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
