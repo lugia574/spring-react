@@ -19,7 +19,7 @@ const isLastPage = (totalCnt: number, pages: number) => {
 export const usePost = () => {
   const navigate = useNavigate();
 
-  const usePostDetail = async (postId: number | undefined) => {
+  const postDetail = async (postId: number | undefined) => {
     if (postId === undefined)
       throw new Error("param error: postId is not exist or not number.");
 
@@ -29,7 +29,7 @@ export const usePost = () => {
     return { data };
   };
 
-  const useSelectAllPost = () => {
+  const useAllPost = () => {
     const {
       data,
       isLoading: isPostLoading,
@@ -65,7 +65,7 @@ export const usePost = () => {
     };
   };
 
-  const useUploadPost = async (postData: PostData) => {
+  const uploadPost = async (postData: PostData) => {
     if (postData.title === "" || postData.content === "")
       throw new Error("data error: title or content is not exist.");
     try {
@@ -80,5 +80,5 @@ export const usePost = () => {
     }
   };
 
-  return { usePostDetail, useSelectAllPost, useUploadPost };
+  return { postDetail, useAllPost, uploadPost };
 };

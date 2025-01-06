@@ -11,7 +11,7 @@ import java.util.Date;
 public class JwtTokenProvider {
     private final static String SECRET_KEY = "mysecretmysecretmysecretmysecretmysecret"; // mysecret*5
     private final static SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-    private final long EXPIRATION_TIME = 360000;
+    private final long EXPIRATION_TIME = 3600000;
 
     public String createToken(String email) {
         return Jwts.builder()
@@ -24,7 +24,7 @@ public class JwtTokenProvider {
 
 
     // JWT에서 사용자 이름 추출
-    public String getUsernameFromToken(String token) {
+    public String getUseremailFromToken(String token) {
         try {
             String email = Jwts.parser().verifyWith(key).
                     build().parseSignedClaims(token).
@@ -38,21 +38,22 @@ public class JwtTokenProvider {
     }
 
     // JWT 검증
-    public static boolean validateJwtToken(String token){
+    public static String validateJwtToken(String token){
+        System.out.println(token);
         if (token == null || !token.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Invalid Authorization header");
         }
-        String sliceToken = token.substring(7);
+        String sliceToken = token.substring(7).trim();
         try {
             Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(sliceToken)
                     .getPayload().getSubject();
-            return true;
+            return sliceToken;
         }catch (Exception err){
             err.printStackTrace();
-            return false;
+            return "";
         }
     }
 }

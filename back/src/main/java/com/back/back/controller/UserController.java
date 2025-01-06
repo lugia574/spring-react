@@ -93,11 +93,9 @@ public class UserController {
         Map<String, String> responseBody = new HashMap<>();
 
         try {
-            if(token == null || token.isEmpty()){
-                ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", MessageConstants.UNAUTHORIZED_NOT_LOGIN));
-            }
             // 토큰 검증
-            if(JwtTokenProvider.validateJwtToken(token)){
+            String validToken = JwtTokenProvider.validateJwtToken(token);
+            if(!validToken.equals("")){
                 // 실제 로그아웃 처리 (예: 토큰 무효화 로직 추가 가능)
                 response.setHeader("Authorization", "");
                 response.addCookie(createClearCookie("refresh_token"));

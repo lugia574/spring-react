@@ -4,6 +4,7 @@ import Title from "../components/common/Title";
 import { useForm } from "react-hook-form";
 import InputText from "../components/common/InputText";
 import { Button } from "../components/common/Button";
+import { Link } from "react-router-dom";
 export interface LoginProps extends isEmailProps {
   password: string;
 }
@@ -59,6 +60,10 @@ const LoginPage = () => {
           >
             로그인
           </Button>
+          <div className="join-link">
+            {/* <UserIcon /> */}
+            <Link to="/join">회원가입 가기</Link>
+          </div>
         </fieldset>
       </form>
     </LoginStyle>
@@ -66,9 +71,12 @@ const LoginPage = () => {
 };
 
 export const LoginStyle = styled.div`
-  max-width: 50%;
-  margin: 80px auto;
-  /* height: 40rem; */
+  max-width: 450px;
+  margin: 40px auto;
+  min-height: 450px;
+  padding: 2.5rem;
+  border: 1px solid ${({ theme }) => theme.color.black};
+  border-radius: ${({ theme }) => theme.borderRadius.default};
 
   fieldset {
     border: 0;
@@ -100,11 +108,18 @@ export const LoginStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    color: ${({ theme }) => theme.color.commentGray};
     gap: 1rem;
     .login-link {
       display: flex;
       justify-content: center;
     }
+  }
+
+  .join-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
   }
 `;
 

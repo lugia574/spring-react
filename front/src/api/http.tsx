@@ -21,7 +21,7 @@ const createClient = (config?: AxiosRequestConfig) => {
     (config) => {
       const accessToken = getToken();
       if (accessToken) {
-        config.headers.authorization = `Bearer ${accessToken}`;
+        config.headers.authorization = `Bearer ${accessToken.trim()}`;
       } else {
         delete config.headers.authorization;
       }

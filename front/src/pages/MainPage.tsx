@@ -3,6 +3,7 @@ import Title from "../components/common/Title";
 import BoardCard from "../components/common/BoardCard";
 import { Post } from "../model/Post.model";
 import BestBoardCard from "../components/common/BestBoardCard";
+import SideButton from "../components/common/SideButton";
 
 // import { useEffect } from "react";
 // interface Props {}
@@ -61,7 +62,7 @@ const posts: Post[] = [
 ];
 
 const MainPage = () => {
-  // const { useSelectAllPost } = usePost();
+  // const { useAllPost } = usePost();
 
   return (
     <MainStyle>
@@ -84,6 +85,7 @@ const MainPage = () => {
         </div>
         <div className="">{}</div>
       </div>
+      <SideButton isWriting={true} />
     </MainStyle>
   );
 };

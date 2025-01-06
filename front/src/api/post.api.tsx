@@ -29,5 +29,6 @@ export interface PostData {
 
 export const postWritePost = async (postData: PostData) => {
   const response = await httpClient.post(`/boards`, postData);
+  console.log(response);
   return response;
 };

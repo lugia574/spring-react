@@ -6,6 +6,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { useState } from "react";
 import { httpClient } from "../api/http";
 import { Button } from "../components/common/Button";
+import { usePost } from "../hook/usePost";
 // interface Props {}
 
 const CKEDITOR_KEY = import.meta.env.VITE_CKEDITOR_KEY;
@@ -73,13 +74,13 @@ function MyCustomUploadAdapterPlugin(editor: {
 }
 
 const PostWritePage = () => {
+  const { uploadPost } = usePost();
   const [postTitle, setPostTitle] = useState("");
   const [content, setContent] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(postTitle);
-    console.log(content);
+    uploadPost({ title: postTitle, content: content });
   };
   return (
     <PostWritePageStyle>

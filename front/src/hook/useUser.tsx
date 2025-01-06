@@ -86,6 +86,7 @@ export const useUser = () => {
   const userLogout = async () => {
     try {
       const res = await authLogout();
+      navigate("/");
       return res;
     } catch (error) {
       return fetchErrorStatusHandler(error, []);

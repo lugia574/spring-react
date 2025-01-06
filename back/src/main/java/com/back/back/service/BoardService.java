@@ -1,15 +1,18 @@
 package com.back.back.service;
 
+import com.back.back.dto.Board.PostRequest;
 import com.back.back.dto.BoardDTO;
 import com.back.back.dto.PaginationDTO;
 import com.back.back.dto.PostListDTO;
 import com.back.back.entity.Board;
 import com.back.back.repository.BoardRepository;
+import com.back.back.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,32 @@ import java.util.stream.Collectors;
 public class BoardService   {
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+
+    public void createPost(String token, PostRequest postRequest){
+        String validToken = jwtTokenProvider.validateJwtToken(token);
+        if(validToken.equals("")){
+            throw new IllegalArgumentException("Invalid token");
+        }
+
+        String email = jwtTokenProvider.getUseremailFromToken(validToken);
+
+        Date now = new Date();
+
+        Board board = new Board();
+        board.setTitle(postRequest.getTitle());
+        board.setContent(postRequest.getContent());
+        board.setWriter_email(email);
+        board.setWriter_datetime(now);
+        board.setFavorite_count(0);
+        board.setComment_count(0);
+        board.setView_count(0);
+
+        boardRepository.save(board);
+    }
 
     public PostListDTO getBoards(int page){
         int pageSize = 10;
