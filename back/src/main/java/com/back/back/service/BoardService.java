@@ -10,6 +10,7 @@ import com.back.back.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -38,11 +39,11 @@ public class BoardService   {
         Board board = new Board();
         board.setTitle(postRequest.getTitle());
         board.setContent(postRequest.getContent());
-        board.setWriter_email(email);
-        board.setWriter_datetime(now);
-        board.setFavorite_count(0);
-        board.setComment_count(0);
-        board.setView_count(0);
+        board.setWriterEmail(email);
+        board.setWriterDatetime(now);
+        board.setFavoriteCount(0);
+        board.setCommentCount(0);
+        board.setViewCount(0);
 
         boardRepository.save(board);
     }
@@ -52,18 +53,20 @@ public class BoardService   {
 
         int pageIndex = Math.max(page - 1, 0);
         try{
-            Page<Board> boardPage = boardRepository.findAll(PageRequest.of(pageIndex, pageSize));
+            Page<Board> boardPage = boardRepository.findAll(
+                    PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, "writerDatetime"))
+            );
 
             List<BoardDTO> boardDTOList = boardPage.getContent().stream().map(board -> {
                 BoardDTO dto = new BoardDTO();
-                dto.setBoardNumber(board.getBoard_number());
+                dto.setBoardNumber(board.getBoardNumber());
                 dto.setTitle(board.getTitle());
                 dto.setContent(board.getContent());
-                dto.setFavoriteCount(board.getFavorite_count());
-                dto.setCommentCount(board.getComment_count());
-                dto.setViewCount(board.getView_count());
-                dto.setWriterEmail(board.getWriter_email());
-                dto.setWriterDatetime(board.getWriter_datetime());
+                dto.setFavoriteCount(board.getFavoriteCount());
+                dto.setCommentCount(board.getCommentCount());
+                dto.setViewCount(board.getViewCount());
+                dto.setWriterEmail(board.getWriterEmail());
+                dto.setWriterDatetime(board.getWriterDatetime());
                 return dto;
             }).collect(Collectors.toList());
 
@@ -83,6 +86,11 @@ public class BoardService   {
             System.err.println("Error fetching boards: " + err.getMessage());
             throw err;
         }
+    }
+
+    public List<Board> getTop5Boards(){
+        List<Board> top5Boards = boardRepository.findTop5ByOrderByViewCountDesc();
+        return top5Boards;
     }
 
     public Board getBoardDetail(Integer boardNumber) {

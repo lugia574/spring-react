@@ -4,12 +4,16 @@ import { httpClient } from "./http";
 export const getPosts = async (page: number) => {
   try {
     const { data } = await httpClient.get<PostList>(`/boards?pages=${page}`);
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
     throw err;
   }
+};
+
+export const getTop5Post = async (): Promise<Post[]> => {
+  const { data } = await httpClient.get<Post[]>("/boards/top5");
+  return data;
 };
 
 export const getPostDetail = async (postId: number) => {

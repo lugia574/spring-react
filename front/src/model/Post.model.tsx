@@ -1,12 +1,12 @@
 export interface Post {
-  board_number: number;
+  boardNumber: number;
   title: string;
   content: string;
-  favorite_count: number;
-  comment_count: number;
-  view_count: number;
-  writer_email: string;
-  writer_datetime: string;
+  favoriteCount: number;
+  commentCount: number;
+  viewCount: number;
+  writerEmail: string;
+  writerDatetime: string;
 }
 
 export interface PostList {

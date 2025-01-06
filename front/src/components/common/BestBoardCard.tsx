@@ -12,16 +12,16 @@ const BestBoardCard = ({ boardProp }: BoardProps) => {
   return (
     <BestBoardCardStyle>
       <div className="bb-warrper">
-        <Link to={`/post/${boardProp.board_number}`}>
+        <Link to={`/post/${boardProp.boardNumber}`}>
           <div className="bb-image">
-            <img src={getImgSrc(boardProp.board_number)} alt={getImgSrc(1)} />
+            <img src={getImgSrc(boardProp.boardNumber)} alt={getImgSrc(1)} />
           </div>
           <div className="bb-content">
             <div className="comment-container">
               <div className="comment-icon">
                 <FaComment />
               </div>
-              <div className="comment-counter">{boardProp.comment_count}</div>
+              <div className="comment-counter">{boardProp.commentCount}</div>
             </div>
             <Title size="medium">{boardProp.title}</Title>
           </div>

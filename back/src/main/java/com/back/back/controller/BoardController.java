@@ -4,6 +4,7 @@ import com.back.back.constants.MessageConstants;
 import com.back.back.dto.Board.PostRequest;
 import com.back.back.dto.PostListDTO;
 import com.back.back.entity.Board;
+import com.back.back.repository.BoardRepository;
 import com.back.back.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,17 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+
     @ResponseBody
     @GetMapping
     public PostListDTO getBoards(@RequestParam("pages") int pages) {
         return boardService.getBoards(pages);
+    }
+
+    @ResponseBody
+    @GetMapping("/top5")
+    public List<Board> getBestBoard(){
+        return boardService.getTop5Boards();
     }
 
     @ResponseBody

@@ -11,10 +11,10 @@ interface BoardProps {
 const BoardCard = ({ boardProp }: BoardProps) => {
   return (
     <BoardCardStyle>
-      <Link to={`/post/${boardProp.board_number}`}>
+      <Link to={`/post/${boardProp.boardNumber}`}>
         <div className="board-warrper">
           <div className="board-image">
-            <img src={getImgSrc(boardProp.board_number)} alt={getImgSrc(1)} />
+            <img src={getImgSrc(boardProp.boardNumber)} alt={getImgSrc(1)} />
           </div>
           <div className="board-content">
             <div className="board-title">
@@ -23,13 +23,13 @@ const BoardCard = ({ boardProp }: BoardProps) => {
                 <div className="comment-icon">
                   <FaComment />
                 </div>
-                <div className="comment-counter">{boardProp.comment_count}</div>
+                <div className="comment-counter">{boardProp.commentCount}</div>
               </div>
             </div>
             <div className="board-info">
-              <span className="board-writer">{boardProp.writer_email}</span>
-              <span className="board-favorite">{boardProp.favorite_count}</span>
-              <span className="board-date">{boardProp.writer_datetime}</span>
+              <span className="board-writer">{boardProp.writerEmail}</span>
+              <span className="board-favorite">{boardProp.favoriteCount}</span>
+              <span className="board-date">{boardProp.writerDatetime}</span>
             </div>
           </div>
         </div>

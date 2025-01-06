@@ -4,36 +4,38 @@ import Title from "../components/common/Title";
 import Comment from "../components/common/Comment";
 import { getImgSrc } from "../utils/image";
 import CommentInput from "../components/common/CommentInput";
-
-import { useCommentList } from "../hook/useComment";
 import { usePost } from "../hook/usePost";
-// interface Props {}
 
 const PostDetailPage = () => {
-  const { usePostDetail } = usePost();
   const { id } = useParams();
-  const postId = id ? parseInt(id, 10) : undefined;
-  const data = usePostDetail(postId);
-  const commentList = useCommentList(postId);
+  const postId = id && /^[0-9]+$/.test(id || "") ? parseInt(id, 10) : 0;
 
+  const { usePostDetail } = usePost();
+  const { data, isLoading } = usePostDetail(postId);
+
+  // const commentList = useCommentList(postId);
   return (
     <PostDetailStyle>
       <div className="Postwarrper">
-        <div className="post-header">
-          <Title size="large">테스트입니당 {postId}</Title>
-          <div className="post-info">
-            <span className="post-wirter">글쓴이 베이지</span>
-            <span className="post-date">2024-12-25</span>
+        {isLoading ? (
+          <></>
+        ) : (
+          <div className="post">
+            <div className="post-header">
+              <Title size="large">{data?.title}</Title>
+              <div className="post-info">
+                <span className="post-wirter">{data?.writer_email}</span>
+                <span className="post-date">{data?.writer_datetime}</span>
+              </div>
+            </div>
+            <div className="post-main">
+              <div className="post-img">
+                <img src={getImgSrc(100)} alt={getImgSrc(1)} />
+              </div>
+              <div className="post-content">{data?.content}</div>
+            </div>
           </div>
-        </div>
-        <div className="post-main">
-          <div className="post-img">
-            <img src={getImgSrc(100)} alt={getImgSrc(1)} />
-          </div>
-          <div className="post-content">
-            이것은 더미 값이지만 이 글을 보면 기부니가 좋아집니다.
-          </div>
-        </div>
+        )}
         <div className="post-comment">
           <div className="comment-info">
             <span> 댓글 💬</span>

@@ -1,7 +1,8 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   getPostDetail,
   getPosts,
+  getTop5Post,
   PostData,
   postWritePost,
 } from "../api/post.api";
@@ -11,22 +12,28 @@ const isLastPage = (totalCnt: number, pages: number) => {
   return totalCnt === 0 || Math.ceil(totalCnt / 10) === pages;
 };
 
-// const { data, isLoading, error } = useQuery({
-//   queryKey: ["postDetail"],
-//   queryFn: () => getPostDetail(postId),
-// });
-
 export const usePost = () => {
   const navigate = useNavigate();
 
-  const postDetail = async (postId: number | undefined) => {
-    if (postId === undefined)
-      throw new Error("param error: postId is not exist or not number.");
+  const usePostDetail = (postId: number | undefined) => {
+    return useQuery({
+      queryKey: ["postDetail", postId],
+      queryFn: () => {
+        if (postId === undefined) {
+          throw new Error("param error: postId is not exist or not number.");
+        }
+        return getPostDetail(postId);
+      },
+    });
+  };
 
-    const data = await getPostDetail(postId);
-    console.log("섹스", data);
-    if (data === undefined) throw new Error(`post error: post does not exist.`);
-    return { data };
+  const useTop5Post = () => {
+    return useQuery({
+      queryKey: ["top5Post"],
+      queryFn: async () => {
+        return await getTop5Post();
+      },
+    });
   };
 
   const useAllPost = () => {
@@ -80,5 +87,5 @@ export const usePost = () => {
     }
   };
 
-  return { postDetail, useAllPost, uploadPost };
+  return { usePostDetail, useAllPost, uploadPost, useTop5Post };
 };

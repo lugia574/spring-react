@@ -14,20 +14,24 @@ import java.util.Date;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer board_number;
+    private Integer boardNumber;
 
     private String title;
 
     private String content;
 
-    private Integer favorite_count;
+    @Column(name = "favorite_count")
+    private Integer favoriteCount;
 
-    private Integer comment_count;
+    @Column(name = "comment_count")
+    private Integer commentCount;
 
-    private Integer view_count;
+    @Column(name = "view_count") // DB 컬럼과 매핑
+    private Integer viewCount;
 
-    private String writer_email;
+    @Column(name = "writer_email")
+    private String writerEmail;
 
-    @Column(name = "write_datetime") // MySQL 컬럼 이름과 매핑
-    private Date writer_datetime;
+    @Column(name = "write_datetime") // DB 컬럼과 매핑
+    private Date writerDatetime;
 }
