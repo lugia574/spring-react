@@ -2,13 +2,8 @@ import { Post, PostList } from "../model/Post.model";
 import { httpClient } from "./http";
 
 export const getPosts = async (page: number) => {
-  try {
-    const { data } = await httpClient.get<PostList>(`/boards?pages=${page}`);
-    return data;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  const { data } = await httpClient.get<PostList>(`/boards?pages=${page}`);
+  return data;
 };
 
 export const getTop5Post = async (): Promise<Post[]> => {
@@ -22,7 +17,7 @@ export const deletePostApi = async (postId: number) => {
 };
 
 export const updatePostApi = async (postId: number, postData: PostData) => {
-  const response = await httpClient.patch(`/boards/${postId}`, postData);
+  const response = await httpClient.put(`/boards/${postId}`, postData);
   return response;
 };
 

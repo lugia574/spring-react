@@ -87,6 +87,7 @@ const PostWritePage = () => {
       <form className="post-form" onSubmit={handleSubmit}>
         <div className="post-title">
           <InputText
+            value={postTitle}
             onChange={(e) => setPostTitle(e.target.value)}
             placeholder="포스트 제목을 입력해주세요."
           />
@@ -113,7 +114,7 @@ const PostWritePage = () => {
   );
 };
 
-const PostWritePageStyle = styled.div`
+export const PostWritePageStyle = styled.div`
   display: flex;
   height: 100%;
   justify-content: center;

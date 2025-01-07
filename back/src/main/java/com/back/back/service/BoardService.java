@@ -6,12 +6,14 @@ import com.back.back.dto.PaginationDTO;
 import com.back.back.dto.PostListDTO;
 import com.back.back.entity.Board;
 import com.back.back.repository.BoardRepository;
+import com.back.back.repository.CommentRepository;
 import com.back.back.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
 public class BoardService   {
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -83,6 +88,34 @@ public class BoardService   {
             System.err.println("Error fetching boards: " + err.getMessage());
             throw err;
         }
+    }
+
+    public void updatePost(String token, Integer postId, PostRequest postRequest){
+        String validToken = jwtTokenProvider.validateJwtToken(token);
+        String email = jwtTokenProvider.getUseremailFromToken(validToken);
+
+        Board board = boardRepository.findByBoardNumberAndWriterEmail(postId, email)
+                .orElseThrow(() -> new IllegalArgumentException(("Unauthorized or Post not found")));
+
+
+        board.setTitle(postRequest.getTitle());
+        board.setContent(postRequest.getContent());
+        boardRepository.save(board); // 저장
+    }
+
+    @Transactional
+    public void deleteBoard(String token, Integer postId){
+        String validToken = jwtTokenProvider.validateJwtToken(token);
+        String email = jwtTokenProvider.getUseremailFromToken(validToken);
+
+        Board board = boardRepository.findByBoardNumberAndWriterEmail(postId, email)
+                .orElseThrow(() -> new IllegalArgumentException(("Unauthorized or Post not found")));
+
+        // Delete comments associated with the board
+        commentRepository.deleteByBoardNumber(postId);
+
+        // Delete the board
+        boardRepository.delete(board);
     }
 
     public List<Board> getTop5Boards(){

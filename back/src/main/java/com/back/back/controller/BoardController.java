@@ -68,9 +68,41 @@ public class BoardController {
 
 
     // update
-
+    @ResponseBody
+    @PutMapping("/{postId}")
+    public ResponseEntity<Map<String, String>> putComment(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable("postId") String postId,
+            @RequestBody PostRequest postRequest){
+        Map<String, String> response = new HashMap<>();
+        Integer postIdAsInteger = Integer.parseInt(postId);
+        try {
+            boardService.updatePost(token, postIdAsInteger, postRequest);
+            response.put("message", MessageConstants.OK_UPDATE_POST);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put("message", MessageConstants.BAD_REQUEST_UPDATE_POST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
     // delete
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Map<String, String>> deleteBaord(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable("postId") Integer postId){
+        Map<String, String> response = new HashMap<>();
 
+        try{
+            boardService.deleteBoard(token, postId);
+            response.put("message", MessageConstants.OK_DELETE_POST);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put("message", MessageConstants.BAD_REQUEST_USER);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
 }

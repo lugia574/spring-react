@@ -34,7 +34,7 @@ const routerArr = [
     errorElement: <Layout children={<ErrorPage />} />,
   },
   {
-    path: "/post/id/edit",
+    path: "/post/:id/edit",
     element: <Layout children={<PostEditPage />} />,
     errorElement: <Layout children={<ErrorPage />} />,
   },

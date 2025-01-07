@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Title from "../components/common/Title";
 import Comment from "../components/common/Comment";
@@ -45,7 +45,6 @@ const PostDetailPage = () => {
   };
 
   const handleDeletePost = () => {
-    console.log(postId);
     deletePost(postId);
   };
 
@@ -77,7 +76,9 @@ const PostDetailPage = () => {
             <div className="post-main">
               {isMyPost && (
                 <div className="post-nav">
-                  <FaPen className="post-nav-icon" />
+                  <Link to={`/post/${data?.boardNumber}/edit`}>
+                    <FaPen className="post-nav-icon" />
+                  </Link>
                   <FaRegTrashAlt
                     className="post-nav-icon"
                     onClick={handleDeletePost}
