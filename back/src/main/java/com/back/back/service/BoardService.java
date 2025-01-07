@@ -28,9 +28,6 @@ public class BoardService   {
 
     public void createPost(String token, PostRequest postRequest){
         String validToken = jwtTokenProvider.validateJwtToken(token);
-        if(validToken.equals("")){
-            throw new IllegalArgumentException("Invalid token");
-        }
 
         String email = jwtTokenProvider.getUseremailFromToken(validToken);
 

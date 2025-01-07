@@ -1,46 +1,6 @@
 import styled from "styled-components";
-import { Button } from "./Button";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-interface CommentInputProps {
-  comment: string;
-}
 
-const CommentInput = () => {
-  const [inputText, setInputText] = useState("");
-  const { register, handleSubmit } = useForm<CommentInputProps>();
-
-  const onSubmit: SubmitHandler<CommentInputProps> = (data) => {
-    console.log(data.comment);
-  };
-  return (
-    <CommentInputStyle>
-      <div className="comment-warrper">
-        <form className="input-form" onSubmit={handleSubmit(onSubmit)}>
-          <textarea
-            className="textForm"
-            {...register("comment", { required: true })}
-            onChange={(e) => setInputText(e.target.value)}
-            value={inputText}
-          >
-            {/* {errors.comment && <p className="error-text">입력해 ㅅㄲ야</p>} */}
-          </textarea>
-          <div className="input-button">
-            <Button
-              $radius="default"
-              $size="medium"
-              type="submit"
-              children={"작성"}
-              $scheme={"secondary"}
-            />
-          </div>
-        </form>
-      </div>
-    </CommentInputStyle>
-  );
-};
-
-const CommentInputStyle = styled.div`
+export const CommentInputStyle = styled.div`
   .comment-warrper {
     position: relative;
     background-color: ${({ theme }) => theme.color.borderGray};
@@ -66,5 +26,3 @@ const CommentInputStyle = styled.div`
     }
   }
 `;
-
-export default CommentInput;

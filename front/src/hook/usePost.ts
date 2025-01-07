@@ -1,13 +1,14 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
+  deletePostApi,
   getPostDetail,
   getPosts,
   getTop5Post,
   PostData,
   postWritePost,
+  updatePostApi,
 } from "../api/post.api";
 import { useNavigate } from "react-router-dom";
-
 const isLastPage = (totalCnt: number, pages: number) => {
   return totalCnt === 0 || Math.ceil(totalCnt / 10) === pages;
 };
@@ -87,5 +88,37 @@ export const usePost = () => {
     }
   };
 
-  return { usePostDetail, useAllPost, uploadPost, useTop5Post };
+  const updatePost = async (postId: number, postData: PostData) => {
+    if (postData.title === "" || postData.content === "")
+      throw new Error("data error: title or content is not exist.");
+
+    try {
+      const res = await updatePostApi(postId, postData);
+      if (res.status !== 202) return new Error("not accepted update");
+      navigate(`/post/${postId}`);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  const deletePost = async (postId: number) => {
+    try {
+      const res = await deletePostApi(postId);
+      if (res.status !== 204) throw new Error("Maybe.. Internal Server Error");
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
+  return {
+    usePostDetail,
+    useAllPost,
+    uploadPost,
+    useTop5Post,
+    deletePost,
+    updatePost,
+  };
 };

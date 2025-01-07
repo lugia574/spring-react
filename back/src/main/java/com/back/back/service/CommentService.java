@@ -1,11 +1,15 @@
 package com.back.back.service;
 
+import com.back.back.dto.Comment.CommentRequset;
 import com.back.back.dto.CommentDTO;
 import com.back.back.entity.Comment;
 import com.back.back.repository.CommentRepository;
+import com.back.back.security.JwtTokenProvider;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +18,9 @@ public class CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     // 특정 게시글의 댓글 조회
     public List<CommentDTO> getComment(Integer boardNumber) {
@@ -24,13 +31,34 @@ public class CommentService {
         return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteComment(String token, Integer commentId){
+        String validToken = jwtTokenProvider.validateJwtToken(token);
+        commentRepository.deleteByCommentNumber(commentId);
+    }
+    public void postComment(String token, CommentRequset commentRequset){
+        String validToken = jwtTokenProvider.validateJwtToken(token);
+
+        Date now = new Date();
+
+        Comment comment = new Comment();
+        comment.setBoardNumber(commentRequset.getBoardNumber());
+        comment.setUserEmail(commentRequset.getUserEmail());
+        comment.setUserNickname(commentRequset.getUserNickname());
+        comment.setCommentContent(commentRequset.getCommentContent());
+        comment.setWriteDatetime(now);
+
+        commentRepository.save(comment);
+    }
+
     private CommentDTO convertToDTO(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setCommentNumber(comment.getComment_number());
-        commentDTO.setCommentContent(comment.getComment_content());
-        commentDTO.setUserEmail(comment.getUser_email());
-        commentDTO.setBoardNumber(comment.getBoard_number());  // board_number를 그대로 사용
-        commentDTO.setWriteDatetime(comment.getWrite_datetime());
+        commentDTO.setCommentNumber(comment.getCommentNumber());
+        commentDTO.setCommentContent(comment.getCommentContent());
+        commentDTO.setUserEmail(comment.getUserEmail());
+        commentDTO.setBoardNumber(comment.getBoardNumber());
+        commentDTO.setWriteDatetime(comment.getWriteDatetime());
+        commentDTO.setUserNickname(comment.getUserNickname());
         return commentDTO;
     }
 }

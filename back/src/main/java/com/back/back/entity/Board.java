@@ -14,6 +14,7 @@ import java.util.Date;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_number")
     private Integer boardNumber;
 
     private String title;

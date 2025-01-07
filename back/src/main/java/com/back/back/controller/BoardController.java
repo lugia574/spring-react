@@ -4,7 +4,6 @@ import com.back.back.constants.MessageConstants;
 import com.back.back.dto.Board.PostRequest;
 import com.back.back.dto.PostListDTO;
 import com.back.back.entity.Board;
-import com.back.back.repository.BoardRepository;
 import com.back.back.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +33,8 @@ public class BoardController {
     public List<Board> getBestBoard(){
         return boardService.getTop5Boards();
     }
+
+
 
     @ResponseBody
     @PostMapping
@@ -66,6 +67,10 @@ public class BoardController {
     }
 
 
+    // update
+
+
+    // delete
 
 
 }

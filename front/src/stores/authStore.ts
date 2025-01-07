@@ -8,13 +8,21 @@ interface StoreState {
 }
 
 export const getNickName = () => {
-  const userName = localStorage.getItem("nickName");
+  let userName = localStorage.getItem("nickName");
+  if (userName === null) userName = "";
   return userName;
 };
 
 export const getToken = () => {
-  const token = localStorage.getItem("token");
+  let token = localStorage.getItem("token");
+  if (token === null) token = "";
   return token; // 로컬 스토리지에 "token"필드가 없는 경우엔 null을 반환
+};
+
+export const getEmail = () => {
+  let email = localStorage.getItem("email");
+  if (email === null) email = "";
+  return email;
 };
 
 export const setToken = (token: string) => {

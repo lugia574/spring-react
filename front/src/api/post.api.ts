@@ -16,14 +16,19 @@ export const getTop5Post = async (): Promise<Post[]> => {
   return data;
 };
 
+export const deletePostApi = async (postId: number) => {
+  const response = await httpClient.delete(`/boards/${postId}`);
+  return response;
+};
+
+export const updatePostApi = async (postId: number, postData: PostData) => {
+  const response = await httpClient.patch(`/boards/${postId}`, postData);
+  return response;
+};
+
 export const getPostDetail = async (postId: number) => {
-  try {
-    const { data } = await httpClient.get<Post>(`/boards/${postId}`);
-    return data;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  const { data } = await httpClient.get<Post>(`/boards/${postId}`);
+  return data;
 };
 
 export interface PostData {
@@ -33,6 +38,5 @@ export interface PostData {
 
 export const postWritePost = async (postData: PostData) => {
   const response = await httpClient.post(`/boards`, postData);
-  console.log(response);
   return response;
 };

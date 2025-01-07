@@ -1,8 +1,29 @@
 import styled from "styled-components";
 import { getImgSrc } from "../../utils/image";
-// interface Props {}
+import { Comment as IComment } from "../../model/Comment.model";
+import { convertDateToISOString } from "../../utils/convertDataType";
+import { useEffect, useState } from "react";
+import { getEmail } from "../../stores/authStore";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { deleteCommentApi } from "../../api/comment.api";
+interface CommentProp {
+  commentProp: IComment;
+  refetch: () => void;
+}
 
-const Comment = () => {
+const Comment = ({ commentProp, refetch }: CommentProp) => {
+  const [myComment, setMyComment] = useState(false);
+
+  const handleDeleteComment = async () => {
+    console.log("실행됐어요", commentProp.commentNumber);
+    if (commentProp.commentNumber === undefined) return;
+    await deleteCommentApi(commentProp.commentNumber);
+    refetch();
+  };
+  useEffect(() => {
+    const email = getEmail();
+    if (email == commentProp.userEmail) setMyComment(true);
+  }, []);
   return (
     <CommentStyle>
       <div className="comment-info">
@@ -10,12 +31,25 @@ const Comment = () => {
           <div className="comment-img">
             <img src={getImgSrc(5)} alt="" />
           </div>
-          <div className="comment-writer">댓글쓴 사람</div>
+          <div className="comment-writer">{commentProp.userNickname}</div>
         </div>
-        <div className="comment-date">2024-12-24</div>
+
+        <div className="comment-date">
+          {convertDateToISOString(
+            commentProp.writeDatetime ? commentProp.writeDatetime : ""
+          )}
+        </div>
       </div>
       <div className="comment-content">
-        이거슨 댓글이랍니다 댓글을 보면 기부니가 더 조아연 오홍홍
+        {commentProp.commentContent}
+
+        {myComment && (
+          <div className="comment-nav">
+            <div className="comment-delete">
+              <FaRegTrashAlt onClick={handleDeleteComment} />
+            </div>
+          </div>
+        )}
       </div>
     </CommentStyle>
   );
@@ -44,8 +78,20 @@ const CommentStyle = styled.div`
     }
   }
   .comment-content {
+    display: flex;
+    justify-content: space-between;
     padding: 0.5rem;
     border-bottom: 1px solid ${({ theme }) => theme.color.commentGray};
+  }
+
+  .comment-nav {
+    display: flex;
+    gap: 0.5rem;
+
+    .comment-update,
+    .comment-delete {
+      cursor: pointer;
+    }
   }
 `;
 

@@ -10,3 +10,13 @@ export const getCommentList = async (postId: number) => {
     throw err;
   }
 };
+
+export const postCommentApi = async (comment: Comment) => {
+  const response = await httpClient.post(`/comments`, comment);
+  return response;
+};
+
+export const deleteCommentApi = async (commentId: number) => {
+  const response = await httpClient.delete(`/comments/${commentId}`);
+  return response;
+};

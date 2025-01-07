@@ -13,4 +13,6 @@ public class CommentDTO {
     private Integer boardNumber;
 
     private Date writeDatetime;
+
+    private String userNickname;
 }

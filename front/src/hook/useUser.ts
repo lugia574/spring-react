@@ -32,7 +32,7 @@ export const fetchErrorStatusHandler = (error: any, statusList: number[]) => {
 };
 
 // 공통 체크 핸들러
-const handleUserCheck = async <T,>(
+const handleUserCheck = async <T>(
   checkFunction: (data: T) => Promise<any>,
   data: T,
   field: string,
