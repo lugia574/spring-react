@@ -9,9 +9,10 @@ import { deleteCommentApi } from "../../api/comment.api";
 interface CommentProp {
   commentProp: IComment;
   refetch: () => void;
+  isDeleteIcon: boolean;
 }
 
-const Comment = ({ commentProp, refetch }: CommentProp) => {
+const Comment = ({ commentProp, refetch, isDeleteIcon }: CommentProp) => {
   const [myComment, setMyComment] = useState(false);
 
   const handleDeleteComment = async () => {
@@ -43,7 +44,7 @@ const Comment = ({ commentProp, refetch }: CommentProp) => {
       <div className="comment-content">
         {commentProp.commentContent}
 
-        {myComment && (
+        {myComment && isDeleteIcon && (
           <div className="comment-nav">
             <div className="comment-delete">
               <FaRegTrashAlt onClick={handleDeleteComment} />

@@ -107,6 +107,7 @@ const PostDetailPage = () => {
                 key={idx}
                 commentProp={comment}
                 refetch={commentRefetch}
+                isDeleteIcon={true}
               />
             ))}
           </div>

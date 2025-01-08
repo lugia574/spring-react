@@ -6,6 +6,7 @@ import SideButton from "../components/common/SideButton";
 import { usePost } from "../hook/usePost";
 import InputText from "../components/common/InputText";
 import { Button } from "../components/common/Button";
+import { useState } from "react";
 
 // import { useEffect } from "react";
 // interface Props {}
@@ -14,8 +15,14 @@ const MainPage = () => {
   const { useAllPost, useTop5Post } = usePost();
   const { posts } = useAllPost();
   const { data } = useTop5Post();
+  const [searchType, setSearchType] = useState("제목");
+  const [keyword, setKeyword] = useState("");
 
-  const handleSearch = () => {};
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("검색 조건:", searchType);
+    console.log("검색 키워드:", keyword);
+  };
   return (
     <MainStyle>
       <div className="main">
@@ -31,14 +38,27 @@ const MainPage = () => {
           <div className="content-list-nav">
             <Title size="medium">📄 전체 게시글</Title>
             <form className="select-input" onSubmit={handleSearch}>
-              <select className="search-select">
+              <select
+                className="search-select"
+                value={searchType}
+                onChange={(e) => setSearchType(e.target.value)}
+              >
                 <option>제목</option>
                 <option>닉네임</option>
                 <option>내용</option>
               </select>
-              <InputText placeholder="검색어를 입력해주세요" />
+              <InputText
+                placeholder="검색어를 입력해주세요"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
               <div className="search-icon">
-                <Button $radius="default" $scheme="normal" $size="medium">
+                <Button
+                  $radius="default"
+                  $scheme="normal"
+                  $size="medium"
+                  type="submit"
+                >
                   검색
                 </Button>
               </div>

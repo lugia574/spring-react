@@ -7,12 +7,37 @@ import InputText from "../components/common/InputText";
 import { getImgSrc } from "../utils/image";
 import { Button } from "../components/common/Button";
 import Title from "../components/common/Title";
+import BoardCard from "../components/common/BoardCard";
+import { Post } from "../model/Post.model";
+import { Comment as IComment } from "../model/Comment.model";
+import Comment from "../components/common/Comment";
 // interface Props {}
+
+const TEST_POST: Post = {
+  boardNumber: 1,
+  commentCount: 2,
+  content: "",
+  favoriteCount: 4,
+  title: "이것은 test",
+  viewCount: 12,
+  writerDatetime: "123",
+  writerEmail: "lcw@test.com",
+};
+
+const TEST_COMMENT: IComment = {
+  boardNumber: 1,
+  commentContent: "이건 test comment",
+  userNickname: "tester",
+  commentNumber: 1,
+  userEmail: "lcw@test.com",
+  writeDatetime: "1231",
+};
 
 const UserPage = () => {
   const { userEmail } = useParams();
   const [isMypage, setIsMypage] = useState(false);
   const { userResign } = useUser();
+  const [activeTag, setActiveTag] = useState(true);
 
   const handleUserUpdate = () => {};
 
@@ -35,7 +60,7 @@ const UserPage = () => {
               <Title size="large">프로필</Title>
             </span>
             <img className="profile-img" src={getImgSrc(50)} />
-            {isMypage && <span>이미지 기능 미구현</span>}
+            {/* {isMypage && <span>이미지 기능 미구현</span>} */}
           </div>
           <div className="user-info-right">
             <div className="input-section">
@@ -58,7 +83,39 @@ const UserPage = () => {
           </div>
         </form>
         <div className="user-works">
-          <div className="user-post"></div>
+          <div className="tag-nav">
+            <Button
+              $radius="tabContainer"
+              $scheme={activeTag ? "primary" : "normal"}
+              $size="large"
+              onClick={() => setActiveTag((prev) => !prev)}
+            >
+              포스트
+            </Button>
+            <Button
+              $radius="tabContainer"
+              $scheme={activeTag ? "normal" : "primary"}
+              $size="large"
+              onClick={() => setActiveTag((prev) => !prev)}
+            >
+              댓글
+            </Button>
+          </div>
+          {activeTag ? (
+            <div className="user-post">
+              <BoardCard boardProp={TEST_POST} />
+              <BoardCard boardProp={TEST_POST} />
+            </div>
+          ) : (
+            <div className="user-comment">
+              {/* 이건 Link 를 위에 덧씌워야함 글고 props 를 추가해서 userPage 에서는 지우기 icons 를 없애자 */}
+              <Comment
+                commentProp={TEST_COMMENT}
+                refetch={() => {}}
+                isDeleteIcon={false}
+              />
+            </div>
+          )}
         </div>
       </div>
     </UserPageStyle>
@@ -74,12 +131,14 @@ const UserPageStyle = styled.div`
     justify-content: center;
     align-items: center;
     width: 80%;
+    gap: 5rem;
   }
   .user-info {
     display: flex;
     width: 100%;
     padding: 1rem;
-    justify-content: space-around;
+    justify-content: start;
+    gap: 10rem;
   }
   .profile {
     display: flex;
@@ -104,9 +163,30 @@ const UserPageStyle = styled.div`
     }
   }
 
+  .profile-resign {
+    display: flex;
+    gap: 1rem;
+    color: ${({ theme }) => theme.color.commentGray};
+  }
+
   .update-button {
     display: flex;
     justify-content: end;
+  }
+
+  .user-works {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+
+  @media ${({ theme }) => theme.mediaQuery.mobile} {
+    .post {
+    }
+    .user-info {
+      flex-direction: column;
+    }
   }
 `;
 
