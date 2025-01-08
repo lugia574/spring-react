@@ -105,7 +105,7 @@ export const usePost = () => {
   const deletePost = async (postId: number) => {
     try {
       const res = await deletePostApi(postId);
-      if (res.status !== 204) throw new Error("Maybe.. Internal Server Error");
+      if (res.status !== 200) throw new Error("Maybe.. Internal Server Error");
       navigate("/");
     } catch (err) {
       console.log(err);

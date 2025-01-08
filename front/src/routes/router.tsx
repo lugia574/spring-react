@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import PostDetailPage from "../pages/PostDetailPage";
 import PostEditPage from "../pages/PostEditPage";
 import PostWritePage from "../pages/PostWritePage";
+import UserPage from "../pages/userPage";
 
 // interface RouterProps {
 //   children: React.ReactNode;
@@ -21,6 +22,11 @@ const routerArr = [
   {
     path: "/join",
     element: <Layout children={<JoinPage />} />,
+    errorElement: <Layout children={<ErrorPage />} />,
+  },
+  {
+    path: "/users/:userEmail",
+    element: <Layout children={<UserPage />} />,
     errorElement: <Layout children={<ErrorPage />} />,
   },
   {

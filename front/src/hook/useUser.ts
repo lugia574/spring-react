@@ -5,6 +5,7 @@ import {
   authLogin,
   authSignup,
   authLogout,
+  authResign,
 } from "../api/user.api";
 import { LoginProps } from "../pages/LoginPage";
 import { UseFormClearErrors, UseFormSetError } from "react-hook-form";
@@ -104,6 +105,17 @@ export const useUser = () => {
     }
   };
 
+  const userResign = async () => {
+    try {
+      const response = await authResign();
+      if (response.status === 200) navigate("/");
+      else throw new Error(`error : ${response.data.message}`);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
   const userEmailCheck = async ({
     email,
     setEmailUniqueCheck,
@@ -120,5 +132,5 @@ export const useUser = () => {
     );
   };
 
-  return { userLogin, userSignup, userEmailCheck, userLogout };
+  return { userLogin, userSignup, userResign, userEmailCheck, userLogout };
 };

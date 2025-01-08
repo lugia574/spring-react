@@ -23,6 +23,11 @@ export const authSignup = async (user: User) => {
     throw err;
   }
 };
+
+export const authResign = async () => {
+  const response = await httpClient.delete("/users");
+  return response;
+};
 interface LoginResponse {
   token: string;
   email: string;

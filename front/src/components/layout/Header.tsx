@@ -3,19 +3,30 @@ import styled from "styled-components";
 import { Button } from "../common/Button";
 import Title from "../common/Title";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../stores/authStore";
+import { getEmail, useAuthStore } from "../../stores/authStore";
 import { useUser } from "../../hook/useUser";
+import { FaUser } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import { useEffect, useState } from "react";
+
 // interface Props {}
 
 const Header = () => {
   const { userLogout } = useUser();
   const { isLoggedIn, storeLogout } = useAuthStore();
+  const [userEmail, setUserEmail] = useState("");
 
   const logoutHandler = () => {
     userLogout().then(() => {
       storeLogout();
     });
   };
+
+  useEffect(() => {
+    const email = getEmail();
+    if (email === "") return;
+    setUserEmail(email);
+  }, []);
 
   return (
     <HeaderStyle>
@@ -29,15 +40,18 @@ const Header = () => {
           <nav className="desktop-nav">
             <div className="">
               {isLoggedIn ? (
-                <Button
-                  $size="medium"
-                  $radius="default"
-                  type="button"
-                  $scheme="normal"
-                  onClick={logoutHandler}
-                >
-                  로그아웃
-                </Button>
+                <div className="user-nav">
+                  <Link to={`/users/${userEmail}`}>
+                    <div className="nav-section">
+                      <FaUser className="nav-icon" />
+                      <span>내 정보</span>
+                    </div>
+                  </Link>
+                  <div className="nav-section" onClick={logoutHandler}>
+                    <FiLogOut className="nav-icon" />
+                    <span>로그아웃</span>
+                  </div>
+                </div>
               ) : (
                 <Link to={`/login`}>
                   <Button
@@ -90,6 +104,20 @@ const HeaderStyle = styled.div`
 
     h1 {
       margin: 0;
+    }
+
+    .user-nav {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      .nav-section {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
     }
   }
 `;
