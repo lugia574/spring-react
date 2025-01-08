@@ -4,6 +4,8 @@ import BoardCard from "../components/common/BoardCard";
 import BestBoardCard from "../components/common/BestBoardCard";
 import SideButton from "../components/common/SideButton";
 import { usePost } from "../hook/usePost";
+import InputText from "../components/common/InputText";
+import { Button } from "../components/common/Button";
 
 // import { useEffect } from "react";
 // interface Props {}
@@ -12,6 +14,8 @@ const MainPage = () => {
   const { useAllPost, useTop5Post } = usePost();
   const { posts } = useAllPost();
   const { data } = useTop5Post();
+
+  const handleSearch = () => {};
   return (
     <MainStyle>
       <div className="main">
@@ -24,7 +28,22 @@ const MainPage = () => {
           </div>
         </div>
         <div className="main-content">
-          <Title size="medium">📄 전체 게시글</Title>
+          <div className="content-list-nav">
+            <Title size="medium">📄 전체 게시글</Title>
+            <form className="select-input" onSubmit={handleSearch}>
+              <select className="search-select">
+                <option>제목</option>
+                <option>닉네임</option>
+                <option>내용</option>
+              </select>
+              <InputText placeholder="검색어를 입력해주세요" />
+              <div className="search-icon">
+                <Button $radius="default" $scheme="normal" $size="medium">
+                  검색
+                </Button>
+              </div>
+            </form>
+          </div>
           {posts.map((post, idx) => (
             <BoardCard key={idx} boardProp={post} />
           ))}
@@ -76,6 +95,41 @@ const MainStyle = styled.div`
 
     .main-content :first-child {
       border-bottom: solid 1px rebeccapurple;
+    }
+
+    .content-list-nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      h1 {
+        width: 20%;
+      }
+
+      .select-input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .search-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        button {
+          height: 40px;
+        }
+      }
+
+      select {
+        padding: 0.2rem 0.75rem;
+        border: 1px solid ${({ theme }) => theme.color.borderGray};
+        border-radius: ${({ theme }) => theme.borderRadius.default};
+        font-size: 1rem;
+        line-height: 1.5;
+        height: 40px;
+      }
     }
   }
 

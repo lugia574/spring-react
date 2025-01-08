@@ -10,6 +10,10 @@
 
 - ~~백엔드 DB 구현 및 controller, service 설계~~
 
-- 백엔드 api 구현 (post, user, comment)
+- ~~백엔드 api 구현 (post, user, comment)~~
 
-- 프론트-백 api 연동
+- ~~프론트-백 api 연동~~
+
+- 유저 update 페이지 백엔드 구현
+
+- 게시물 검색 기능 구현

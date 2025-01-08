@@ -18,7 +18,8 @@ const FooterStyle = styled.div`
   display: flex;
   justify-content: center;
 
-  margin: 0 auto;
+  margin-top: 5rem;
+
   width: 100%;
 
   background-color: ${({ theme }) => theme.color.primary};
