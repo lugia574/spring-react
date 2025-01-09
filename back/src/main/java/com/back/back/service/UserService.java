@@ -59,6 +59,13 @@ public class UserService {
         return true;
     }
 
+    public void resignUser(String email){
+        if (!userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("User with email " + email + " does not exist.");
+        }
+        userRepository.deleteByEmail(email);
+    }
+
 
     public String generateToken(String email) {
         return jwtTokenProvider.createToken(email);

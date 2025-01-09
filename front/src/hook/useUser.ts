@@ -67,7 +67,7 @@ const handleUserCheck = async <T>(
 
 export const useUser = () => {
   const navigate = useNavigate();
-  const { storeLogin } = useAuthStore();
+  const { storeLogin, storeLogout } = useAuthStore();
 
   const userLogin = async (user: LoginProps) => {
     try {
@@ -87,6 +87,7 @@ export const useUser = () => {
   const userLogout = async () => {
     try {
       const res = await authLogout();
+      storeLogout();
       navigate("/");
       return res;
     } catch (error) {
@@ -108,8 +109,10 @@ export const useUser = () => {
   const userResign = async () => {
     try {
       const response = await authResign();
-      if (response.status === 200) navigate("/");
-      else throw new Error(`error : ${response.data.message}`);
+      if (response.status === 200) {
+        storeLogout();
+        navigate("/");
+      } else throw new Error(`error : ${response.data.message}`);
     } catch (err) {
       console.log(err);
       throw err;

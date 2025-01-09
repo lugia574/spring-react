@@ -28,7 +28,6 @@ public class BoardController {
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "pages") String pages
     ) {
-        System.out.println(searchType + "@@@@" + keyword + "@@@@" + pages + " 말해봐 새끼야");
         Integer pagesAsInteger = Integer.parseInt(pages);
         PostListDTO postListDTO = boardService.getBoards(searchType, keyword, pagesAsInteger);
         return ResponseEntity.ok(postListDTO);

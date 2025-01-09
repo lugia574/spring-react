@@ -25,7 +25,7 @@ export const authSignup = async (user: User) => {
 };
 
 export const authResign = async () => {
-  const response = await httpClient.delete("/users");
+  const response = await httpClient.delete(`/user`);
   return response;
 };
 interface LoginResponse {
@@ -44,7 +44,6 @@ export const authLogin = async (user: LoginProps): Promise<LoginResponse> => {
     if (errorObj.response.status === 400) {
       throw err;
     }
-    console.log(err);
     throw err;
   }
 };

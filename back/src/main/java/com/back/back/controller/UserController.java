@@ -46,6 +46,21 @@ public class UserController {
         response.put("message", MessageConstants.INTERNAL_SERVER_ERROR);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+    @DeleteMapping()
+    public ResponseEntity<Map<String, String>> resign(@RequestHeader(value = "Authorization", required = false) String token){
+        Map<String, String> response = new HashMap<>();
+        try {
+            String validToken = jwtTokenProvider.validateJwtToken(token);
+            String email = jwtTokenProvider.getUseremailFromToken(validToken);
+            userService.resignUser(email);
+            response.put("message", MessageConstants.OK_WITHDRAW);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put("message", MessageConstants.BAD_REQUEST_WITHDRAW);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
 
     @PostMapping("/join/check")
     public ResponseEntity<Map<String, String>> userIsEmail(@RequestBody EmailCheckRequest emailCheckRequest){
