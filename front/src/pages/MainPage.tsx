@@ -6,7 +6,7 @@ import SideButton from "../components/common/SideButton";
 import { usePost } from "../hook/usePost";
 import InputText from "../components/common/InputText";
 import { Button } from "../components/common/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // import { useEffect } from "react";
 // interface Props {}
@@ -18,6 +18,7 @@ const MainPage = () => {
   const [searchType, setSearchType] = useState("제목");
   const [keyword, setKeyword] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { searchData } = useSearchPost(searchType, keyword);
 
@@ -34,6 +35,21 @@ const MainPage = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // 모바일 기준 화면 너비 조정
+    };
+
+    // 초기 실행 및 이벤트 등록
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // 클린업
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <MainStyle>
       <div className="main">
@@ -41,9 +57,13 @@ const MainPage = () => {
           <Title size="medium">👍 베스트 포스트</Title>
 
           <div className="best-content-list">
-            {data?.map((post, idx) => (
-              <BestBoardCard key={idx} boardProp={post} />
-            ))}
+            {data?.map((post, idx) =>
+              isMobile ? (
+                <BoardCard key={idx} boardProp={post} /> // 모바일일 경우 BoardCard 사용
+              ) : (
+                <BestBoardCard key={idx} boardProp={post} /> // 기본 BestBoardCard 사용
+              )
+            )}
           </div>
         </div>
         <div className="main-content">
@@ -181,6 +201,11 @@ const MainStyle = styled.div`
     .main-best,
     .main-content {
       width: 100%;
+      height: auto;
+    }
+
+    .best-content-list {
+      flex-direction: column;
     }
   }
 `;

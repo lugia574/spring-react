@@ -190,7 +190,8 @@ const PostDetailStyle = styled.div`
     }
 
     .post-img > img {
-      width: 70%;
+      width: 30%;
+      height: auto;
     }
     .post-content {
       width: 100%;
@@ -203,6 +204,13 @@ const PostDetailStyle = styled.div`
     border-top: 1px solid ${({ theme }) => theme.color.black};
     padding: 0.5rem 0 2rem 0;
     gap: 1rem;
+  }
+
+  @media ${({ theme }) => theme.mediaQuery.mobile} {
+    .post-img > img {
+      width: auto;
+      /* height: auto; */
+    }
   }
 `;
 

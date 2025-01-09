@@ -68,6 +68,11 @@ const BestBoardCardStyle = styled.div`
       rgba(0, 0, 0, 0.1)
     );
   }
+  .bb-content > h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .comment-container {
     display: flex;

@@ -30,7 +30,7 @@ const Comment = ({ commentProp, refetch, isDeleteIcon }: CommentProp) => {
       <div className="comment-info">
         <div className="comment-profile">
           <div className="comment-img">
-            <img src={getImgSrc(5)} alt="" />
+            <img src={getImgSrc(Math.floor(Math.random() * 11))} alt="" />
           </div>
           <div className="comment-writer">{commentProp.userNickname}</div>
         </div>

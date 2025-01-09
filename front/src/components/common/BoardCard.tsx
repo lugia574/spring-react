@@ -4,6 +4,7 @@ import { Post } from "../../model/Post.model";
 import { getImgSrc } from "../../utils/image";
 import { Link } from "react-router-dom";
 import { FaComment } from "react-icons/fa";
+import { convertDateToISOString } from "../../utils/convertDataType";
 interface BoardProps {
   boardProp: Post;
 }
@@ -29,7 +30,9 @@ const BoardCard = ({ boardProp }: BoardProps) => {
             <div className="board-info">
               <span className="board-writer">{boardProp.writerEmail}</span>
               <span className="board-favorite">{boardProp.favoriteCount}</span>
-              <span className="board-date">{boardProp.writerDatetime}</span>
+              <span className="board-date">
+                {convertDateToISOString(boardProp.writerDatetime)}
+              </span>
             </div>
           </div>
         </div>
@@ -73,6 +76,9 @@ const BoardCardStyle = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+    .board-title {
+      display: flex;
+    }
 
     .board-title > h1 {
       margin: 0.3rem 0;
@@ -80,6 +86,7 @@ const BoardCardStyle = styled.div`
     .comment-container {
       display: flex;
       align-items: center;
+
       text-align: center;
       gap: 0.2rem;
 
