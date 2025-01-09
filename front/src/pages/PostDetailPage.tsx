@@ -21,7 +21,7 @@ const PostDetailPage = () => {
 
   const { usePostDetail, deletePost } = usePost();
   const { data, isLoading } = usePostDetail(postId);
-  const { comments, commentRefetch } = useCommentList(postId);
+  const { comments, commentRefetch } = useCommentList(id, undefined);
   const [isMyPost, setIsMyPost] = useState(false);
 
   const [postCommentList, setPostCommentList] = useState<IComment[]>([]);
@@ -65,7 +65,9 @@ const PostDetailPage = () => {
             <div className="post-header">
               <Title size="large">{data?.title}</Title>
               <div className="post-info">
-                <span className="post-wirter">{data?.writerEmail}</span>
+                <Link to={`/users/${data?.writerEmail}`}>
+                  <span className="post-wirter">{data?.writerEmail}</span>
+                </Link>
                 <span className="post-date">
                   {convertDateToISOString(
                     data?.writerDatetime ? data?.writerDatetime : ""

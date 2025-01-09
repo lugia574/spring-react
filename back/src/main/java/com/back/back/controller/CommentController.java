@@ -9,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,16 +24,24 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @ResponseBody
-    @GetMapping("/{postId}")
-    public List<CommentDTO> getComment(@PathVariable("postId") String postId){
+    @GetMapping
+        public ResponseEntity<Map<String, Object>> getComment(@RequestParam(name = "userEmail", required = false) String userEmail,
+                                       @RequestParam(name = "postId", required = false) String postId) {
+        Map<String, Object> response = new HashMap<>();
+        Integer postIdAsInteger = (postId != null && !postId.isEmpty()) ? Integer.parseInt(postId) : null;
+
         try {
-            Integer postIdAsInteger = Integer.parseInt(postId);
-            return commentService.getComment(postIdAsInteger);
-        }catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid post ID format: " + postId, e);
+            List<CommentDTO> commentList = commentService.getComment(userEmail, postIdAsInteger);
+            response.put("message", MessageConstants.OK_SELECT_COMMENT);
+            response.put("data", commentList);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("message", MessageConstants.BAD_REQUEST_UPDATE_POST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
 
 
 

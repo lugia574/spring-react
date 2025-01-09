@@ -46,7 +46,7 @@ export const usePost = () => {
       hasNextPage: hasNextPosts,
     } = useInfiniteQuery({
       queryKey: ["posts"],
-      queryFn: ({ pageParam }) => getPosts(pageParam),
+      queryFn: ({ pageParam }) => getPosts({ page: pageParam }),
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
         return isLastPage(
@@ -70,6 +70,44 @@ export const usePost = () => {
       postsRefetch,
       nextPosts,
       hasNextPosts,
+    };
+  };
+
+  const useSearchPost = (searchType: string, keyword: string) => {
+    const {
+      data,
+      isLoading: isSearchLoading,
+      refetch: searchRefetch,
+      fetchNextPage: nextSearchPosts,
+      hasNextPage: hasNextSearchPosts,
+    } = useInfiniteQuery({
+      queryKey: ["searchPosts", searchType, keyword],
+      queryFn: ({ pageParam }) =>
+        getPosts({ page: pageParam, searchType, keyword }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        return isLastPage(
+          lastPage.pagination.totalItems,
+          lastPage.pagination.page
+        )
+          ? null
+          : Number(lastPage.pagination.page) + 1;
+      },
+      enabled: !!keyword,
+    });
+
+    const searchData = data ? data.pages.flatMap((page) => page.posts) : [];
+    const searchPage = data ? data.pages[data.pages.length - 1].pagination : {};
+    const isEmptySearchPosts = searchData.length === 0;
+
+    return {
+      searchData,
+      searchPage,
+      isEmptySearchPosts,
+      isSearchLoading,
+      searchRefetch,
+      nextSearchPosts,
+      hasNextSearchPosts,
     };
   };
 
@@ -120,5 +158,6 @@ export const usePost = () => {
     useTop5Post,
     deletePost,
     updatePost,
+    useSearchPost,
   };
 };

@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,12 +24,32 @@ public class CommentService {
     private JwtTokenProvider jwtTokenProvider;
 
     // 특정 게시글의 댓글 조회
-    public List<CommentDTO> getComment(Integer boardNumber) {
-        // board_number를 기준으로 댓글 조회
-        List<Comment> comments = commentRepository.findByBoardNumber(boardNumber);
+    public List<CommentDTO> getComment(String userEmail, Integer boardNumber) {
+        try{
+            List<Comment> comments;
+            if ((userEmail == null || userEmail.isEmpty()) && boardNumber != null) {
+                // board_number를 기준으로 댓글 조회
+                System.out.println("@@@@@@@ post 로 조회 @@@@@");
+                comments = commentRepository.findByBoardNumber(boardNumber);
 
-        // Comment 엔티티 리스트를 CommentDTO 리스트로 변환
-        return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
+            } else if (boardNumber == null && userEmail != null && !userEmail.isEmpty()) {
+                // user_email을 기준으로 댓글 조회
+                System.out.println("@@@@@@@ userEmail 로 조회 @@@@@");
+                comments = commentRepository.findByUserEmail(userEmail);
+            } else {
+                throw new IllegalArgumentException(
+                        "Bad request: Either userEmail or boardNumber must be provided. " +
+                                "Received userEmail=" + userEmail + ", boardNumber=" + boardNumber
+                );
+            }
+            // Comment 엔티티 리스트를 CommentDTO 리스트로 변환
+            List<CommentDTO> CommentList = comments.stream().map(this::convertToDTO).collect(Collectors.toList());
+            return CommentList;
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage()+"@@@@@@@@@@@@@@");
+            throw e;
+        }
     }
 
     @Transactional

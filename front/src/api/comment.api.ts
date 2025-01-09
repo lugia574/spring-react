@@ -1,14 +1,21 @@
 import { Comment } from "../model/Comment.model";
 import { httpClient } from "./http";
 
-export const getCommentList = async (postId: number) => {
-  try {
-    const { data } = await httpClient.get<Comment[]>(`/comments/${postId}`);
-    return data;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+interface getCommentParams {
+  userEmail?: string;
+  postId?: string;
+}
+
+export const getCommentList = async ({
+  userEmail,
+  postId,
+}: getCommentParams) => {
+  const params = new URLSearchParams({
+    ...(userEmail && { userEmail }),
+    ...(postId && { postId }),
+  });
+  const { data } = await httpClient.get(`/comments?${params.toString()}`);
+  return data?.data;
 };
 
 export const postCommentApi = async (comment: Comment) => {

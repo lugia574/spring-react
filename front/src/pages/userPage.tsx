@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getEmail } from "../stores/authStore";
 import { useUser } from "../hook/useUser";
@@ -8,36 +8,20 @@ import { getImgSrc } from "../utils/image";
 import { Button } from "../components/common/Button";
 import Title from "../components/common/Title";
 import BoardCard from "../components/common/BoardCard";
-import { Post } from "../model/Post.model";
-import { Comment as IComment } from "../model/Comment.model";
 import Comment from "../components/common/Comment";
+import { usePost } from "../hook/usePost";
+import { useCommentList } from "../hook/useComment";
+import { Comment as ICommet } from "../model/Comment.model";
 // interface Props {}
-
-const TEST_POST: Post = {
-  boardNumber: 1,
-  commentCount: 2,
-  content: "",
-  favoriteCount: 4,
-  title: "이것은 test",
-  viewCount: 12,
-  writerDatetime: "123",
-  writerEmail: "lcw@test.com",
-};
-
-const TEST_COMMENT: IComment = {
-  boardNumber: 1,
-  commentContent: "이건 test comment",
-  userNickname: "tester",
-  commentNumber: 1,
-  userEmail: "lcw@test.com",
-  writeDatetime: "1231",
-};
 
 const UserPage = () => {
   const { userEmail } = useParams();
-  const [isMypage, setIsMypage] = useState(false);
   const { userResign } = useUser();
+  const { useSearchPost } = usePost();
+  const [isMypage, setIsMypage] = useState(false);
   const [activeTag, setActiveTag] = useState(true);
+  const { searchData } = useSearchPost("닉네임", userEmail ? userEmail : "");
+  const { comments } = useCommentList(undefined, userEmail);
 
   const handleUserUpdate = () => {};
 
@@ -103,17 +87,21 @@ const UserPage = () => {
           </div>
           {activeTag ? (
             <div className="user-post">
-              <BoardCard boardProp={TEST_POST} />
-              <BoardCard boardProp={TEST_POST} />
+              {searchData.map((item, idx) => (
+                <BoardCard key={idx} boardProp={item} />
+              ))}
             </div>
           ) : (
             <div className="user-comment">
-              {/* 이건 Link 를 위에 덧씌워야함 글고 props 를 추가해서 userPage 에서는 지우기 icons 를 없애자 */}
-              <Comment
-                commentProp={TEST_COMMENT}
-                refetch={() => {}}
-                isDeleteIcon={false}
-              />
+              {comments.map((item: ICommet, idx: number) => (
+                <Link to={`/post/${item.boardNumber}`} key={idx}>
+                  <Comment
+                    commentProp={item}
+                    refetch={() => {}}
+                    isDeleteIcon={false}
+                  />
+                </Link>
+              ))}
             </div>
           )}
         </div>
@@ -139,6 +127,10 @@ const UserPageStyle = styled.div`
     padding: 1rem;
     justify-content: start;
     gap: 10rem;
+  }
+  .info-nickname {
+    display: flex;
+    justify-content: space-between;
   }
   .profile {
     display: flex;

@@ -4,13 +4,16 @@ import { getEmail, getNickName } from "../stores/authStore";
 import { Comment as IComment } from "../model/Comment.model";
 // import { useNavigate } from "react-router-dom";
 
-export const useCommentList = (postId: number | undefined) => {
+export const useCommentList = (
+  postId?: string | undefined,
+  userEmail?: string | undefined
+) => {
   const { data, refetch: commentRefetch } = useQuery({
-    queryKey: ["comments", postId],
+    queryKey: ["comments", postId, userEmail],
     queryFn: () => {
-      if (postId === undefined)
+      if (!postId && !userEmail)
         throw new Error(`param error : posit id is not exist or not number`);
-      return getCommentList(postId);
+      return getCommentList({ postId, userEmail });
     },
   });
   const comments = data ? data : [];

@@ -1,8 +1,26 @@
 import { Post, PostList } from "../model/Post.model";
 import { httpClient } from "./http";
 
-export const getPosts = async (page: number) => {
-  const { data } = await httpClient.get<PostList>(`/boards?pages=${page}`);
+interface GetPostsParams {
+  page: number;
+  searchType?: string;
+  keyword?: string;
+}
+
+export const getPosts = async ({
+  page = 1, // 기본값 설정
+  searchType,
+  keyword,
+}: GetPostsParams) => {
+  const params = new URLSearchParams({
+    pages: String(page),
+    ...(searchType && { searchType }),
+    ...(keyword && { keyword }),
+  });
+
+  const { data } = await httpClient.get<PostList>(
+    `/boards?${params.toString()}`
+  );
   return data;
 };
 

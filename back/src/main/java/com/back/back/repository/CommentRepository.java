@@ -13,8 +13,10 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     List<Comment> findByBoardNumber(Integer boardNumber);
+
+    List<Comment> findByUserEmail(String email);
     void deleteByCommentNumber(Integer commentNumber);
 
-    @Transactional
+//    @Transactional
     void deleteByBoardNumber(Integer boardNumber);
 }

@@ -12,22 +12,34 @@ import { useState } from "react";
 // interface Props {}
 
 const MainPage = () => {
-  const { useAllPost, useTop5Post } = usePost();
+  const { useAllPost, useTop5Post, useSearchPost } = usePost();
   const { posts } = useAllPost();
   const { data } = useTop5Post();
   const [searchType, setSearchType] = useState("제목");
   const [keyword, setKeyword] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const { searchData } = useSearchPost(searchType, keyword);
+
+  const postSwitch = () => {
+    setIsSearching(false);
+  };
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("검색 조건:", searchType);
-    console.log("검색 키워드:", keyword);
+    if (keyword.trim() === "") {
+      postSwitch();
+    } else {
+      setIsSearching(true);
+    }
   };
+
   return (
     <MainStyle>
       <div className="main">
         <div className="main-best">
           <Title size="medium">👍 베스트 포스트</Title>
+
           <div className="best-content-list">
             {data?.map((post, idx) => (
               <BestBoardCard key={idx} boardProp={post} />
@@ -36,7 +48,9 @@ const MainPage = () => {
         </div>
         <div className="main-content">
           <div className="content-list-nav">
-            <Title size="medium">📄 전체 게시글</Title>
+            <div className="totalpost-btn" onClick={postSwitch}>
+              <Title size="medium">📄 전체 게시글</Title>
+            </div>
             <form className="select-input" onSubmit={handleSearch}>
               <select
                 className="search-select"
@@ -64,9 +78,13 @@ const MainPage = () => {
               </div>
             </form>
           </div>
-          {posts.map((post, idx) => (
-            <BoardCard key={idx} boardProp={post} />
-          ))}
+          {isSearching
+            ? searchData.map((post, idx) => (
+                <BoardCard key={idx} boardProp={post} />
+              ))
+            : posts.map((post, idx) => (
+                <BoardCard key={idx} boardProp={post} />
+              ))}
         </div>
         <div className="">{}</div>
       </div>
@@ -122,8 +140,10 @@ const MainStyle = styled.div`
       display: flex;
       justify-content: space-between;
 
-      h1 {
-        width: 20%;
+      .totalpost-btn {
+        cursor: pointer;
+        display: flex;
+        width: 8rem;
       }
 
       .select-input {

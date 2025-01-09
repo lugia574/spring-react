@@ -50,27 +50,36 @@ public class BoardService   {
         boardRepository.save(board);
     }
 
-    public PostListDTO getBoards(int page){
+    public PostListDTO getBoards(String searchType, String keyword, int page){
         int pageSize = 10;
 
         int pageIndex = Math.max(page - 1, 0);
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, "writerDatetime"));
         try{
-            Page<Board> boardPage = boardRepository.findAll(
-                    PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, "writerDatetime"))
-            );
+            Page<Board> boardPage;
+            if(keyword == null || keyword.isEmpty()){
+                boardPage = boardRepository.findAll(pageRequest);
+            }else{
+                switch (searchType) {
+                    case "제목":
+                        boardPage = boardRepository.findByTitleContaining(keyword, pageRequest);
+                        break;
+                    case "닉네임":
+                        boardPage = boardRepository.findByWriterEmailContaining(keyword, pageRequest);
+                        break;
+                    case "내용":
+                        boardPage = boardRepository.findByContentContaining(keyword, pageRequest);
+                        break;
+                    default:
+                        System.err.println("Invalid searchType: " + searchType);
+                        boardPage = boardRepository.findAll(pageRequest);
+                }
+            }
 
-            List<BoardDTO> boardDTOList = boardPage.getContent().stream().map(board -> {
-                BoardDTO dto = new BoardDTO();
-                dto.setBoardNumber(board.getBoardNumber());
-                dto.setTitle(board.getTitle());
-                dto.setContent(board.getContent());
-                dto.setFavoriteCount(board.getFavoriteCount());
-                dto.setCommentCount(board.getCommentCount());
-                dto.setViewCount(board.getViewCount());
-                dto.setWriterEmail(board.getWriterEmail());
-                dto.setWriterDatetime(board.getWriterDatetime());
-                return dto;
-            }).collect(Collectors.toList());
+
+            List<BoardDTO> boardDTOList = boardPage.getContent().stream()
+                    .map(this::mapToBoardDTO)
+                    .collect(Collectors.toList());
 
             // Pagination 정보 생성
             PaginationDTO pagination = new PaginationDTO();
@@ -127,4 +136,19 @@ public class BoardService   {
         return boardRepository.findById(boardNumber)
                 .orElseThrow(() -> new IllegalStateException("게시글을 찾을 수 없습니다."));
     }
+
+
+    private BoardDTO mapToBoardDTO(Board board) {
+        BoardDTO dto = new BoardDTO();
+        dto.setBoardNumber(board.getBoardNumber());
+        dto.setTitle(board.getTitle());
+        dto.setContent(board.getContent());
+        dto.setFavoriteCount(board.getFavoriteCount());
+        dto.setCommentCount(board.getCommentCount());
+        dto.setViewCount(board.getViewCount());
+        dto.setWriterEmail(board.getWriterEmail());
+        dto.setWriterDatetime(board.getWriterDatetime());
+        return dto;
+    }
+
 }
