@@ -1,6 +1,6 @@
 package com.back.back.service;
 
-import com.back.back.dto.Comment.CommentRequset;
+import com.back.back.dto.comment.CommentRequset;
 import com.back.back.dto.CommentDTO;
 import com.back.back.entity.Comment;
 import com.back.back.repository.CommentRepository;

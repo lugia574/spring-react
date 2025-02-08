@@ -1,7 +1,7 @@
 package com.back.back.controller;
 
 import com.back.back.constants.MessageConstants;
-import com.back.back.dto.Comment.CommentRequset;
+import com.back.back.dto.comment.CommentRequset;
 import com.back.back.dto.CommentDTO;
 import com.back.back.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/api/comments")
 public class CommentController {
     @Autowired
@@ -45,7 +41,7 @@ public class CommentController {
 
 
 
-    @ResponseBody
+
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Map<String, String>> deleteComment(
             @RequestHeader(value = "Authorization", required = false) String token,
@@ -63,7 +59,7 @@ public class CommentController {
         }
     }
 
-    @ResponseBody
+
     @PostMapping
     public ResponseEntity<Map<String, String>> postComment(
             @RequestHeader(value = "Authorization", required = false) String token,

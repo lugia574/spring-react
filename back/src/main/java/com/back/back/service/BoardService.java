@@ -1,6 +1,6 @@
 package com.back.back.service;
 
-import com.back.back.dto.Board.PostRequest;
+import com.back.back.dto.board.PostRequest;
 import com.back.back.dto.BoardDTO;
 import com.back.back.dto.PaginationDTO;
 import com.back.back.dto.PostListDTO;

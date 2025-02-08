@@ -27,7 +27,7 @@ public class UserController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @ResponseBody
+
     @GetMapping("/userList")
     public List<User> userApi(){
         return userService.getUserApi();

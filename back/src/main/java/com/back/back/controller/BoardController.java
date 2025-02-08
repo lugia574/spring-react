@@ -1,21 +1,20 @@
 package com.back.back.controller;
 
 import com.back.back.constants.MessageConstants;
-import com.back.back.dto.Board.PostRequest;
+import com.back.back.dto.board.PostRequest;
 import com.back.back.dto.PostListDTO;
 import com.back.back.entity.Board;
 import com.back.back.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/api/boards")
 public class BoardController {
     @Autowired
@@ -34,7 +33,6 @@ public class BoardController {
     }
 
 
-    @ResponseBody
     @GetMapping("/top5")
     public List<Board> getBestBoard(){
         return boardService.getTop5Boards();
@@ -42,7 +40,7 @@ public class BoardController {
 
 
 
-    @ResponseBody
+
     @PostMapping
     public ResponseEntity<Map<String, String>> postBoard(
             @RequestHeader(value = "Authorization", required = false) String token,
@@ -59,7 +57,7 @@ public class BoardController {
 
     }
 
-    @ResponseBody
+
     @GetMapping("/{postId}")
     public Board getBoardDetail(@PathVariable("postId") String postId) {
         try {
@@ -74,7 +72,6 @@ public class BoardController {
 
 
     // update
-    @ResponseBody
     @PutMapping("/{postId}")
     public ResponseEntity<Map<String, String>> putComment(
             @RequestHeader(value = "Authorization", required = false) String token,

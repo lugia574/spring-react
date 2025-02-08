@@ -1,4 +1,4 @@
-package com.back.back.dto.Board;
+package com.back.back.dto.board;
 
 import lombok.Getter;
 import lombok.Setter;
