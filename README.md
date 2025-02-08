@@ -44,7 +44,17 @@ React.js - Spring boot 로 구현한 커뮤니티 웹 게시판 사이트
 - Spring boot
 - Spring boot JPA
 - Spring boot security
+- Swagger
 - lombok
 - Mysql
 - jwt (jjwt)
+
+
+## API
+
+### 백엔드
+![api](https://github.com/user-attachments/assets/fda6f88b-46fa-4c4e-9a31-7c315bf6c389)
+
+
+
 
