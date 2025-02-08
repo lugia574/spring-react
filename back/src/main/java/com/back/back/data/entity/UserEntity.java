@@ -1,4 +1,4 @@
-package com.back.back.entity;
+package com.back.back.data.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

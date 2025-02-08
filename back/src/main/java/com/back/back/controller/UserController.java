@@ -1,10 +1,10 @@
 package com.back.back.controller;
 
 import com.back.back.constants.MessageConstants;
-import com.back.back.dto.auth.EmailCheckRequest;
-import com.back.back.dto.auth.JoinRequest;
-import com.back.back.dto.auth.LoginRequest;
-import com.back.back.entity.User;
+import com.back.back.data.dto.auth.EmailCheckRequest;
+import com.back.back.data.dto.auth.JoinRequest;
+import com.back.back.data.dto.auth.LoginRequest;
+import com.back.back.data.entity.UserEntity;
 import com.back.back.security.JwtTokenProvider;
 import com.back.back.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -21,15 +21,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    @Autowired UserController(UserService userService, JwtTokenProvider jwtTokenProvider){
+        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
 
     @GetMapping("/userList")
-    public List<User> userApi(){
+    public List<UserEntity> userApi(){
         return userService.getUserApi();
     }
 
@@ -83,7 +85,7 @@ public class UserController {
     public ResponseEntity<Map<String, String>> userLogin(@RequestBody LoginRequest loginRequest){
         Map<String, String> response = new HashMap<>();
         try {
-            User user = userService.getUserByEmail(loginRequest.getEmail());
+            UserEntity user = userService.getUserByEmail(loginRequest.getEmail());
             if(!userService.comparePassword(loginRequest.getPassword(), user.getPassword())){
                 response.put("message", MessageConstants.BAD_REQUEST_LOGIN);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

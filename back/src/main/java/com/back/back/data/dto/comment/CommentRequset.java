@@ -1,4 +1,4 @@
-package com.back.back.dto.comment;
+package com.back.back.data.dto.comment;
 
 import lombok.Getter;
 import lombok.Setter;

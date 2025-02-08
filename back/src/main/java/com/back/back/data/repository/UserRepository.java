@@ -1,6 +1,6 @@
-package com.back.back.repository;
+package com.back.back.data.repository;
 
-import com.back.back.entity.UserEntity;
+import com.back.back.data.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

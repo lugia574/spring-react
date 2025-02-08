@@ -1,4 +1,4 @@
-package com.back.back.entity;
+package com.back.back.data.entity;
 
 public class Image {
 }

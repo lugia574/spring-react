@@ -1,9 +1,9 @@
 package com.back.back.controller;
 
 import com.back.back.constants.MessageConstants;
-import com.back.back.dto.board.PostRequest;
-import com.back.back.dto.PostListDTO;
-import com.back.back.entity.Board;
+import com.back.back.data.dto.board.PostRequest;
+import com.back.back.data.dto.PostListDTO;
+import com.back.back.data.entity.BoardEntity;
 import com.back.back.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
+    private final BoardService boardService;
+
     @Autowired
-    private BoardService boardService;
+    public BoardController(BoardService boardService){
+        this.boardService = boardService;
+    }
 
 
     @GetMapping
@@ -34,7 +38,7 @@ public class BoardController {
 
 
     @GetMapping("/top5")
-    public List<Board> getBestBoard(){
+    public List<BoardEntity> getBestBoard(){
         return boardService.getTop5Boards();
     }
 
@@ -59,7 +63,7 @@ public class BoardController {
 
 
     @GetMapping("/{postId}")
-    public Board getBoardDetail(@PathVariable("postId") String postId) {
+    public BoardEntity getBoardDetail(@PathVariable("postId") String postId) {
         try {
             Integer postIdAsInteger = Integer.parseInt(postId);
             System.out.println("Post ID: " + postIdAsInteger);

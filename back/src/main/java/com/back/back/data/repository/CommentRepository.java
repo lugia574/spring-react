@@ -1,9 +1,7 @@
-package com.back.back.repository;
+package com.back.back.data.repository;
 
-import com.back.back.entity.CommentEntity;
+import com.back.back.data.entity.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

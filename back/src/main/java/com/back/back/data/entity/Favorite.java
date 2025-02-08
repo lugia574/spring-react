@@ -1,4 +1,4 @@
-package com.back.back.entity;
+package com.back.back.data.entity;
 
 import jakarta.persistence.Entity;
 import lombok.Data;

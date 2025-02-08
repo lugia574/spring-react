@@ -1,13 +1,12 @@
 package com.back.back.controller;
 
 import com.back.back.constants.MessageConstants;
-import com.back.back.dto.comment.CommentRequset;
-import com.back.back.dto.CommentDTO;
+import com.back.back.data.dto.comment.CommentRequset;
+import com.back.back.data.dto.CommentDTO;
 import com.back.back.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,8 +16,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
-    @Autowired
+
     private CommentService commentService;
+
+    @Autowired CommentController(CommentService commentService){
+        this.commentService = commentService;
+    }
 
     @GetMapping
         public ResponseEntity<Map<String, Object>> getComment(@RequestParam(name = "userEmail", required = false) String userEmail,
