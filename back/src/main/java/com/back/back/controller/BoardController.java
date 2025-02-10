@@ -1,13 +1,18 @@
 package com.back.back.controller;
 
 import com.back.back.constants.MessageConstants;
-import com.back.back.data.dto.board.PostRequest;
+import com.back.back.data.dto.board.GetBoardsRequestDTO;
+import com.back.back.data.dto.board.PostBoardRequestDTO;
 import com.back.back.data.dto.PostListDTO;
-import com.back.back.data.entity.BoardEntity;
+import com.back.back.data.entity.Board;
 import com.back.back.service.BoardService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,20 +30,17 @@ public class BoardController {
     }
 
 
+    @Validated
     @GetMapping
-    public ResponseEntity<PostListDTO> getBoards(
-            @RequestParam(name = "searchType", required = false) String searchType,
-            @RequestParam(name = "keyword", required = false) String keyword,
-            @RequestParam(name = "pages") String pages
-    ) {
-        Integer pagesAsInteger = Integer.parseInt(pages);
-        PostListDTO postListDTO = boardService.getBoards(searchType, keyword, pagesAsInteger);
+    public ResponseEntity<PostListDTO> getBoards(GetBoardsRequestDTO getBoardsRequestDTO) {
+        PostListDTO postListDTO = boardService.getBoards(getBoardsRequestDTO.getSearchType(), getBoardsRequestDTO.getKeyword(), getBoardsRequestDTO.getPages());
+
         return ResponseEntity.ok(postListDTO);
     }
 
 
     @GetMapping("/top5")
-    public List<BoardEntity> getBestBoard(){
+    public List<Board> getBestBoard(){
         return boardService.getTop5Boards();
     }
 
@@ -48,10 +50,10 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<Map<String, String>> postBoard(
             @RequestHeader(value = "Authorization", required = false) String token,
-            @RequestBody PostRequest postRequest){
+            @Valid @RequestBody PostBoardRequestDTO postBoardRequestDTO){
         Map<String, String> response = new HashMap<>();
         try {
-            boardService.createPost(token, postRequest);
+            boardService.createPost(token, postBoardRequestDTO);
             response.put("message", MessageConstants.OK_UPLOAD_POST);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){
@@ -63,15 +65,8 @@ public class BoardController {
 
 
     @GetMapping("/{postId}")
-    public BoardEntity getBoardDetail(@PathVariable("postId") String postId) {
-        try {
-            Integer postIdAsInteger = Integer.parseInt(postId);
-            System.out.println("Post ID: " + postIdAsInteger);
-            return boardService.getBoardDetail(postIdAsInteger);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid post ID format: " + postId, e);
-        }
-
+    public Board getBoardDetail(@PathVariable("postId") @Min(1) @Pattern(regexp = "\\d+") int postId) {
+        return boardService.getBoardDetail(postId);
     }
 
 
@@ -80,11 +75,11 @@ public class BoardController {
     public ResponseEntity<Map<String, String>> putComment(
             @RequestHeader(value = "Authorization", required = false) String token,
             @PathVariable("postId") String postId,
-            @RequestBody PostRequest postRequest){
+            @Valid @RequestBody PostBoardRequestDTO postBoardRequestDTO){
         Map<String, String> response = new HashMap<>();
         Integer postIdAsInteger = Integer.parseInt(postId);
         try {
-            boardService.updatePost(token, postIdAsInteger, postRequest);
+            boardService.updatePost(token, postIdAsInteger, postBoardRequestDTO);
             response.put("message", MessageConstants.OK_UPDATE_POST);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
         }catch (Exception e){

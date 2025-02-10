@@ -2,7 +2,7 @@ package com.back.back.service.impl;
 
 import com.back.back.data.dao.UserDAO;
 import com.back.back.data.dto.auth.JoinRequest;
-import com.back.back.data.entity.UserEntity;
+import com.back.back.data.entity.User;
 import com.back.back.security.JwtTokenProvider;
 import com.back.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +29,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getUserApi() {
+    public List<User> getUserApi() {
         return userDAO.getAllUsers();
     }
 
     @Override
     public boolean joinUser(JoinRequest joinRequest) {
-        UserEntity user = UserEntity.builder()
+        User user = User.builder()
                 .email(joinRequest.getEmail())
                 .password(passwordEncoder.encode(joinRequest.getPassword()))
                 .nickname(joinRequest.getNickname())
                 .profile(null)
                 .build();
+
 
         userDAO.saveUser(user);
         return true;
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.existsByEmail(email);
     }
     @Override
-    public UserEntity getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userDAO.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
     }
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity userDetail(String email) {
+    public User userDetail(String email) {
         return userDAO.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
 }

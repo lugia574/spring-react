@@ -3,7 +3,7 @@ package com.back.back.service.impl;
 import com.back.back.data.dao.CommentDAO;
 import com.back.back.data.dto.CommentDTO;
 import com.back.back.data.dto.comment.CommentRequset;
-import com.back.back.data.entity.CommentEntity;
+import com.back.back.data.entity.Comment;
 import com.back.back.security.JwtTokenProvider;
 import com.back.back.service.CommentService;
 import jakarta.transaction.Transactional;
@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public List<CommentDTO> getComment(String userEmail, Integer boardNumber) {
         try{
-            List<CommentEntity> comments;
+            List<Comment> comments;
             if ((userEmail == null || userEmail.isEmpty()) && boardNumber != null) {
                 comments = commentDAO.findByBoardNumber(boardNumber);
 
@@ -62,7 +62,7 @@ public class CommentServiceImpl implements CommentService{
 
         Date now = new Date();
 
-        CommentEntity comment = CommentEntity.builder()
+        Comment comment = Comment.builder()
                 .boardNumber(commentRequset.getBoardNumber())
                 .userEmail(commentRequset.getUserEmail())
                 .userNickname(commentRequset.getUserNickname())
@@ -73,7 +73,7 @@ public class CommentServiceImpl implements CommentService{
         commentDAO.saveComment(comment);
     }
 
-    private CommentDTO convertToDTO(CommentEntity comment) {
+    private CommentDTO convertToDTO(Comment comment) {
         CommentDTO commentDTO = CommentDTO.builder()
                 .commentNumber(comment.getCommentNumber())
                 .commentContent(comment.getCommentContent())

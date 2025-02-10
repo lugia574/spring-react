@@ -4,7 +4,7 @@ import com.back.back.constants.MessageConstants;
 import com.back.back.data.dto.auth.EmailCheckRequest;
 import com.back.back.data.dto.auth.JoinRequest;
 import com.back.back.data.dto.auth.LoginRequest;
-import com.back.back.data.entity.UserEntity;
+import com.back.back.data.entity.User;
 import com.back.back.security.JwtTokenProvider;
 import com.back.back.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -31,7 +31,7 @@ public class UserController {
 
 
     @GetMapping("/userList")
-    public List<UserEntity> userApi(){
+    public List<User> userApi(){
         return userService.getUserApi();
     }
 
@@ -85,7 +85,7 @@ public class UserController {
     public ResponseEntity<Map<String, String>> userLogin(@RequestBody LoginRequest loginRequest){
         Map<String, String> response = new HashMap<>();
         try {
-            UserEntity user = userService.getUserByEmail(loginRequest.getEmail());
+            User user = userService.getUserByEmail(loginRequest.getEmail());
             if(!userService.comparePassword(loginRequest.getPassword(), user.getPassword())){
                 response.put("message", MessageConstants.BAD_REQUEST_LOGIN);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

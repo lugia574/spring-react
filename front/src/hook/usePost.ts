@@ -73,6 +73,12 @@ export const usePost = () => {
     };
   };
 
+  const searchTypeMap: Record<string, string> = {
+    제목: "title",
+    내용: "content",
+    닉네임: "writer",
+  };
+
   const useSearchPost = (searchType: string, keyword: string) => {
     const {
       data,
@@ -81,7 +87,7 @@ export const usePost = () => {
       fetchNextPage: nextSearchPosts,
       hasNextPage: hasNextSearchPosts,
     } = useInfiniteQuery({
-      queryKey: ["searchPosts", searchType, keyword],
+      queryKey: ["searchPosts", searchTypeMap[searchType], keyword],
       queryFn: ({ pageParam }) =>
         getPosts({ page: pageParam, searchType, keyword }),
       initialPageParam: 1,

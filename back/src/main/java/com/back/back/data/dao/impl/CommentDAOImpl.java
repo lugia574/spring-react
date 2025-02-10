@@ -1,7 +1,7 @@
 package com.back.back.data.dao.impl;
 
 import com.back.back.data.dao.CommentDAO;
-import com.back.back.data.entity.CommentEntity;
+import com.back.back.data.entity.Comment;
 import com.back.back.data.repository.CommentRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,17 +16,17 @@ public class CommentDAOImpl implements CommentDAO {
         this.commentRepository = commentRepository;
     }
     @Override
-    public List<CommentEntity> findByBoardNumber(Integer boardNumber) {
+    public List<Comment> findByBoardNumber(Integer boardNumber) {
         return commentRepository.findByBoardNumber(boardNumber);
     }
 
     @Override
-    public List<CommentEntity> findByUserEmail(String userEmail) {
+    public List<Comment> findByUserEmail(String userEmail) {
         return commentRepository.findByUserEmail(userEmail);
     }
 
     @Override
-    public void saveComment(CommentEntity comment) {
+    public void saveComment(Comment comment) {
         commentRepository.save(comment);
     }
 

@@ -2,11 +2,9 @@ package com.back.back.data.dto.board;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class PostRequest {
+public class PostBoardRequestDTO {
 
     @NotNull
     private String title;

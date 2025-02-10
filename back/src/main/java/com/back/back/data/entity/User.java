@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-public class UserEntity {
+public class User {
     @NotNull
     @Id
     private String email;
