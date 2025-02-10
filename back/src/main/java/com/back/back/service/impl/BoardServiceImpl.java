@@ -1,6 +1,7 @@
 package com.back.back.service.impl;
 
 import com.back.back.data.dao.BoardDAO;
+
 import com.back.back.data.dto.BoardDTO;
 import com.back.back.data.dto.PaginationDTO;
 import com.back.back.data.dto.PostListDTO;
@@ -36,14 +37,15 @@ public class BoardServiceImpl implements BoardService {
         String email = jwtTokenProvider.getUseremailFromToken(validToken);
         Date now = new Date();
 
-        BoardEntity board = new BoardEntity();
-        board.setTitle(postRequest.getTitle());
-        board.setContent(postRequest.getContent());
-        board.setWriterEmail(email);
-        board.setWriterDatetime(now);
-        board.setFavoriteCount(0);
-        board.setCommentCount(0);
-        board.setViewCount(0);
+        BoardEntity board = BoardEntity.builder()
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
+                .writerEmail(email)
+                .writerDatetime(now)
+                .favoriteCount(0)
+                .commentCount(0)
+                .viewCount(0)
+                .build();
 
         boardDAO.save(board);
     }
@@ -78,15 +80,14 @@ public class BoardServiceImpl implements BoardService {
                 .map(this::mapToBoardDTO)
                 .collect(Collectors.toList());
 
-        PaginationDTO pagination = new PaginationDTO();
-        pagination.setPage(boardPage.getNumber() + 1);
-        pagination.setTotalItems((int) boardPage.getTotalElements());
+        PaginationDTO pagination = PaginationDTO.builder()
+                .page(boardPage.getNumber() + 1)
+                .totalItems((int) boardPage.getTotalElements()).build();
 
-        PostListDTO postList = new PostListDTO();
-        postList.setPosts(boardDTOList);
-        postList.setPagination(pagination);
 
-        return postList;
+        return PostListDTO.builder()
+                .posts(boardDTOList)
+                .pagination(pagination).build();
     }
 
     @Override
@@ -128,15 +129,15 @@ public class BoardServiceImpl implements BoardService {
 
 
     private BoardDTO mapToBoardDTO(BoardEntity board) {
-        BoardDTO dto = new BoardDTO();
-        dto.setBoardNumber(board.getBoardNumber());
-        dto.setTitle(board.getTitle());
-        dto.setContent(board.getContent());
-        dto.setFavoriteCount(board.getFavoriteCount());
-        dto.setCommentCount(board.getCommentCount());
-        dto.setViewCount(board.getViewCount());
-        dto.setWriterEmail(board.getWriterEmail());
-        dto.setWriterDatetime(board.getWriterDatetime());
-        return dto;
+        return BoardDTO.builder()
+                .boardNumber(board.getBoardNumber())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .favoriteCount(board.getFavoriteCount())
+                .commentCount(board.getCommentCount())
+                .viewCount(board.getViewCount())
+                .writerEmail(board.getWriterEmail())
+                .writerDatetime(board.getWriterDatetime())
+                .build();
     }
 }

@@ -35,11 +35,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean joinUser(JoinRequest joinRequest) {
-        UserEntity user = new UserEntity();
-        user.setEmail(joinRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(joinRequest.getPassword()));
-        user.setNickname(joinRequest.getNickname());
-        user.setProfile(null);
+        UserEntity user = UserEntity.builder()
+                .email(joinRequest.getEmail())
+                .password(passwordEncoder.encode(joinRequest.getPassword()))
+                .nickname(joinRequest.getNickname())
+                .profile(null)
+                .build();
 
         userDAO.saveUser(user);
         return true;

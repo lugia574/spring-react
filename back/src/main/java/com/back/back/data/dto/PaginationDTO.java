@@ -1,11 +1,13 @@
 package com.back.back.data.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString
 public class PaginationDTO {
     private int page;

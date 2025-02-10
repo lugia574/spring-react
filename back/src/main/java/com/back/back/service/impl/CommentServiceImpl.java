@@ -62,24 +62,27 @@ public class CommentServiceImpl implements CommentService{
 
         Date now = new Date();
 
-        CommentEntity comment = new CommentEntity();
-        comment.setBoardNumber(commentRequset.getBoardNumber());
-        comment.setUserEmail(commentRequset.getUserEmail());
-        comment.setUserNickname(commentRequset.getUserNickname());
-        comment.setCommentContent(commentRequset.getCommentContent());
-        comment.setWriteDatetime(now);
+        CommentEntity comment = CommentEntity.builder()
+                .boardNumber(commentRequset.getBoardNumber())
+                .userEmail(commentRequset.getUserEmail())
+                .userNickname(commentRequset.getUserNickname())
+                .commentContent(commentRequset.getCommentContent())
+                .writeDatetime(now)
+                .build();
 
         commentDAO.saveComment(comment);
     }
 
     private CommentDTO convertToDTO(CommentEntity comment) {
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setCommentNumber(comment.getCommentNumber());
-        commentDTO.setCommentContent(comment.getCommentContent());
-        commentDTO.setUserEmail(comment.getUserEmail());
-        commentDTO.setBoardNumber(comment.getBoardNumber());
-        commentDTO.setWriteDatetime(comment.getWriteDatetime());
-        commentDTO.setUserNickname(comment.getUserNickname());
+        CommentDTO commentDTO = CommentDTO.builder()
+                .commentNumber(comment.getCommentNumber())
+                .commentContent(comment.getCommentContent())
+                .userEmail(comment.getUserEmail())
+                .boardNumber(comment.getBoardNumber())
+                .writeDatetime(comment.getWriteDatetime())
+                .userNickname(comment.getUserNickname())
+                .build();
+
         return commentDTO;
     }
 }
